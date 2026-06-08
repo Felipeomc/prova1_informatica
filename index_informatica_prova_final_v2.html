@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prova – Introdução à Informática | UFPB</title>
+<style>
+:root {
+  --verde:#2d7a4f;
+  --verde-claro:#4caf7d;
+  --verde-bg:#e8f5ee;
+  --azul:#1a6b8a;
+  --amarelo:#e8a830;
+  --bg:#f4f8f5;
+  --card:#ffffff;
+  --text:#1a2e1f;
+  --muted:#5a7a62;
+  --erro:#c0392b;
+  --acerto:#27ae60;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Segoe UI',Arial,sans-serif;
+  background:
+    radial-gradient(circle at 8% 8%, rgba(45,122,79,.13), transparent 28%),
+    radial-gradient(circle at 92% 10%, rgba(26,107,138,.15), transparent 30%),
+    radial-gradient(circle at 50% 97%, rgba(76,175,125,.15), transparent 30%),
+    var(--bg);
+  color:var(--text);
+  min-height:100vh;
+}
+.strip{display:grid;grid-template-columns:repeat(4,1fr);height:6px;}
+.strip span:nth-child(1){background:var(--verde);}
+.strip span:nth-child(2){background:var(--azul);}
+.strip span:nth-child(3){background:var(--verde-claro);}
+.strip span:nth-child(4){background:var(--amarelo);}
+
+/* HERO */
+.hero{padding:16px 16px 10px;text-align:center;}
+.hero-card{
+  max-width:860px;margin:0 auto;
+  background:rgba(255,255,255,.95);
+  border:1px solid #c8e0cf;border-radius:20px;
+  padding:20px 24px;
+  box-shadow:0 10px 28px rgba(15,40,20,.10);
+}
+.kicker{
+  display:inline-flex;align-items:center;gap:7px;
+  background:#e3f2ec;color:#1a5c38;
+  border:1px solid #b2d8c4;border-radius:999px;
+  padding:5px 13px;font-weight:700;font-size:13px;margin-bottom:8px;
+}
+h1{font-size:clamp(22px,4vw,36px);line-height:1.1;color:var(--verde);letter-spacing:-0.5px;margin-bottom:6px;}
+.hero p{color:#4a6651;font-size:clamp(13px,1.8vw,15px);line-height:1.5;max-width:680px;margin:0 auto;}
+.badges{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:12px;}
+.badge{
+  background:var(--verde-bg);color:var(--verde);
+  border:1px solid #b2d8c4;border-radius:8px;
+  padding:5px 12px;font-size:13px;font-weight:600;
+}
+
+/* IDENTIFICAÇÃO */
+.main{width:min(900px,calc(100% - 24px));margin:10px auto 30px;display:flex;flex-direction:column;gap:16px;}
+.panel{background:var(--card);border:1px solid #d0e8d6;border-radius:18px;box-shadow:0 8px 24px rgba(15,40,20,.08);padding:24px;}
+
+.id-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media(max-width:560px){.id-grid{grid-template-columns:1fr;}}
+label{display:block;font-size:13px;font-weight:700;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px;}
+input,select{
+  width:100%;padding:10px 13px;
+  border:1.5px solid #c8dece;border-radius:9px;
+  font-size:15px;color:var(--text);background:#fbfdfb;
+  outline:none;transition:border-color .2s;
+}
+input:focus,select:focus{border-color:var(--verde-claro);}
+
+/* SEÇÕES */
+.section-header{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:16px;padding-bottom:10px;
+  border-bottom:2px solid var(--verde-bg);
+}
+.section-icon{
+  width:34px;height:34px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;
+}
+.section-icon.verde{background:var(--verde-bg);}
+.section-icon.azul{background:#e3eff5;}
+.section-icon.amarelo{background:#fef6e6;}
+.section-header h2{font-size:17px;color:var(--text);}
+.section-header small{font-size:12px;color:var(--muted);margin-left:auto;}
+
+/* QUESTÃO */
+.questao{
+  border:1.5px solid #dde9e1;border-radius:13px;
+  padding:16px 18px;margin-bottom:12px;
+  background:#fafcfb;transition:border-color .2s;
+}
+.questao:last-child{margin-bottom:0;}
+.q-header{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;}
+.q-num{
+  min-width:30px;height:30px;border-radius:50%;
+  background:var(--verde);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;flex-shrink:0;margin-top:2px;
+}
+.q-texto{font-size:15px;line-height:1.55;color:var(--text);}
+.q-tag{
+  display:inline-block;background:#e3eff5;color:var(--azul);
+  border-radius:6px;padding:2px 8px;font-size:11px;font-weight:600;
+  margin-bottom:6px;
+}
+
+.opcoes{display:flex;flex-direction:column;gap:7px;margin-top:2px;}
+.opcao{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:9px 12px;border-radius:9px;cursor:pointer;
+  border:1.5px solid #dde9e1;background:#fff;
+  transition:all .15s;
+}
+.opcao:hover{border-color:var(--verde-claro);background:var(--verde-bg);}
+.opcao input[type=radio]{
+  width:16px;height:16px;margin-top:2px;flex-shrink:0;
+  accent-color:var(--verde);
+}
+.opcao span{font-size:14px;line-height:1.45;}
+
+/* ESTADOS */
+.questao.correta{border-color:var(--acerto);background:#f0fbf4;}
+.questao.errada{border-color:var(--erro);background:#fdf3f2;}
+.opcao.gabarito{border-color:var(--acerto)!important;background:#e8f8ef!important;}
+.opcao.errou{border-color:var(--erro)!important;background:#fdecea!important;}
+.feedback{margin-top:10px;padding:8px 12px;border-radius:8px;font-size:13px;line-height:1.45;}
+.feedback.ok{background:#e3f5eb;color:#1a5c38;}
+.feedback.nok{background:#fce8e6;color:#952c21;}
+
+/* CÓDIGO */
+.cod{
+  font-family:'Consolas','Courier New',monospace;
+  background:#f0f4f2;border:1px solid #cde0d5;border-radius:8px;
+  padding:10px 13px;font-size:13px;line-height:1.6;
+  white-space:pre;overflow-x:auto;margin:8px 0 4px;display:block;
+}
+
+/* BOTÃO */
+.btn-enviar{
+  display:block;width:100%;padding:15px;
+  background:linear-gradient(135deg,var(--verde),var(--verde-claro));
+  color:#fff;font-size:17px;font-weight:700;
+  border:none;border-radius:13px;cursor:pointer;
+  box-shadow:0 6px 18px rgba(45,122,79,.3);
+  transition:transform .15s,box-shadow .15s;
+}
+.btn-enviar:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(45,122,79,.35);}
+.btn-enviar:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+
+/* RESULTADO */
+#resultado{display:none;}
+.resultado-card{
+  text-align:center;padding:28px 20px;
+  border:2px solid var(--verde);border-radius:18px;
+  background:linear-gradient(135deg,#e8f5ee,#f0fbf6);
+}
+.nota-big{font-size:64px;font-weight:900;color:var(--verde);line-height:1;}
+.nota-label{font-size:14px;color:var(--muted);margin-bottom:8px;}
+.msg-resultado{font-size:16px;font-weight:600;color:var(--text);margin-top:8px;}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px;}
+.stat{background:#fff;border:1px solid #c8e0cf;border-radius:11px;padding:12px;text-align:center;}
+.stat-val{font-size:26px;font-weight:800;color:var(--verde);}
+.stat-lbl{font-size:12px;color:var(--muted);}
+.status-envio{margin-top:12px;font-size:13px;color:var(--muted);text-align:center;min-height:20px;}
+
+/* FLUXOGRAMA */
+.fluxo-img{border:1.5px solid #c8dece;border-radius:10px;padding:14px;background:#fff;margin:8px 0 4px;}
+.fluxo-box{
+  display:inline-block;border:2px solid var(--verde);border-radius:6px;
+  padding:5px 14px;font-size:13px;font-weight:600;background:#e8f5ee;
+  text-align:center;
+}
+.fluxo-diamond{
+  display:inline-block;border:2px solid var(--azul);
+  transform:rotate(45deg);width:70px;height:70px;
+  position:relative;
+}
+.fluxo-diamond span{
+  display:block;transform:rotate(-45deg);
+  font-size:11px;font-weight:600;color:var(--azul);
+  position:absolute;top:50%;left:50%;transform:rotate(-45deg) translate(-50%,-50%);
+  white-space:nowrap;
+}
+.fluxo-oval{
+  display:inline-block;border:2px solid var(--verde);
+  border-radius:50%;padding:5px 16px;
+  font-size:13px;font-weight:600;background:#e8f5ee;
+}
+.fluxo-row{display:flex;align-items:center;justify-content:center;gap:8px;margin:6px 0;}
+.fluxo-arrow{font-size:18px;color:var(--verde);}
+</style>
+</head>
+<body>
+
+<div class="strip"><span></span><span></span><span></span><span></span></div>
+
+<div class="hero">
+  <div class="hero-card">
+    <div class="kicker">🌿 UFPB · CCA · DCFS</div>
+    <h1>Prova — Introdução à Informática</h1>
+    <p>Turmas de Agronomia e Ciências Biológicas · Unidade 1 · 2026.1 · Prof. Felipe<br>
+    20 questões · cada questão vale 0,5 ponto · total 10,0 pontos</p>
+    <div class="badges">
+      <span class="badge">💻 Hardware & Software</span>
+      <span class="badge">⚙️ Fundamentos</span>
+      <span class="badge">📊 EPS</span>
+      <span class="badge">🌿 Algoritmos</span>
+      <span class="badge">🔷 Fluxogramas</span>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- IDENTIFICAÇÃO -->
+  <div class="panel">
+    <div class="section-header">
+      <div class="section-icon verde">👤</div>
+      <h2>Identificação</h2>
+    </div>
+    <div class="id-grid">
+      <div>
+        <label for="nome">Nome completo</label>
+        <input type="text" id="nome" placeholder="Seu nome completo">
+      </div>
+      <div>
+        <label for="matricula">Matrícula</label>
+        <input type="text" id="matricula" placeholder="Ex.: 20240001">
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOCO 1: FUNDAMENTOS -->
+  <div class="panel" id="bloco1">
+    <div class="section-header">
+      <div class="section-icon verde">💡</div>
+      <h2>Bloco 1 — Fundamentos de Computação</h2>
+      <small>Q1–Q8 · 4,0 pts</small>
+    </div>
+
+    <!-- Q1 -->
+    <div class="questao" data-q="1" data-resp="C">
+      <div class="q-header">
+        <div class="q-num">1</div>
+        <div>
+          <span class="q-tag">Dado e informação</span>
+          <div class="q-texto">Em uma coleta de campo, o sensor registrou <strong>umidade do solo = 18%</strong>. Sozinho, esse valor é um <strong>dado</strong>. Depois de analisar o valor, o estudante concluiu: <strong>“o solo está seco e precisa de irrigação”</strong>. Qual alternativa representa corretamente essa diferença?</div>
+        </div>
+      </div>
+      <div class="opcoes">
+        <label class="opcao"><input type="radio" name="q1" value="A"><span>A) Informação é o valor bruto coletado pelo sensor; dado é a conclusão feita depois da análise.</span></label>
+        <label class="opcao"><input type="radio" name="q1" value="B"><span>B) Dado e informação têm exatamente o mesmo significado em qualquer situação.</span></label>
+        <label class="opcao"><input type="radio" name="q1" value="C"><span>C) Dado é o valor bruto coletado; informação é o dado organizado e interpretado com significado.</span></label>
+        <label class="opcao"><input type="radio" name="q1" value="D"><span>D) Dado é sempre texto; informação é sempre número.</span></label>
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="questao" data-q="2" data-resp="B">
+      <div class="q-header">
+        <div class="q-num">2</div>
+        <div>
+          <span class="q-tag">Hardware e software</span>
+          <div class="q-texto">Um computador do laboratório é usado para abrir imagens, armazenar arquivos e executar programas. Qual alternativa separa corretamente <strong>hardware</strong> e <strong>software</strong>?</div>
+        </div>
+      </div>
+      <div class="opcoes">
+        <label class="opcao"><input type="radio" name="q2" value="A"><span>A) Placa-mãe, RAM e processador são software; Windows é hardware.</span></label>
+        <label class="opcao"><input type="radio" name="q2" value="B"><span>B) Processador, memória RAM e monitor são hardware; Windows é software.</span></label>
+        <label class="opcao"><input type="radio" name="q2" value="C"><span>C) Excel e Windows são hardware; teclado e mouse são software.</span></label>
+        <label class="opcao"><input type="radio" name="q2" value="D"><span>D) HD e SSD são software; navegador de internet é hardware.</span></label>
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="questao" data-q="3" data-resp="D">
+      <div class="q-header">
+        <div class="q-num">3</div>
+        <div>
+          <span class="q-tag">CPU</span>
+          <div class="q-texto">A CPU executa instruções seguindo uma sequência lógica. Qual alternativa apresenta a sequência mais completa estudada em aula?</div>
+        </div>
+      </div>
+      <div class="opcoes">
+        <label class="opcao"><input type="radio" name="q3" value="A"><span>A) Executar → Buscar → Decodificar → Armazenar</span></label>
+        <label class="opcao"><input type="radio" name="q3" value="B"><span>B) Decodificar → Buscar → Executar → Reiniciar</span></label>
+        <label class="opcao"><input type="radio" name="q3" value="C"><span>C) Armazenar → Executar → Buscar → Decodificar</span></label>
+        <label class="opcao"><input type="radio" name="q3" value="D"><span>D) Buscar instrução → Decodificar → Buscar dados → Executar → Armazenar resultado</span></label>
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="questao" data-q="4" data-resp="A">
+      <div class="q-header">
+        <div class="q-num">4</div>
+        <div>
+          <span class="q-tag">Memória</span>
+          <div class="q-texto">Um computador estava processando dados de um experimento. A energia acabou e os dados em uso foram perdidos. Em qual memória esses dados estavam?</div>
+        </div>
+      </div>
+      <div class="opcoes">
+        <label class="opcao"><input type="radio" name="q4" value="A"><span>A) Memória RAM, usada durante o processamento.</span></label>
+        <label class="opcao"><input type="radio" name="q4" value="B"><span>B) Memória ROM, usada para instruções permanentes.</span></label>
+        <label class="opcao"><input type="radio" name="q4" value="C"><span>C) HD, usado para armazenamento permanente de arquivos.</span></label>
+        <label class="opcao"><input type="radio" name="q4" value="D"><span>D) Pen drive, usado para transportar arquivos.</span></label>
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="questao" data-q="5" data-resp="C">
+      <div class="q-header">
+        <div class="q-num">5</div>
+        <div>
+          <span class="q-tag">Periféricos</span>
+          <div class="q-texto">Em uma atividade no laboratório, o aluno digita valores no <strong>teclado</strong>, usa o <strong>mouse</strong> para selecionar opções, digitaliza uma ficha no <strong>scanner</strong>, visualiza o resultado no <strong>monitor</strong> e imprime o relatório na <strong>impressora</strong>. Quais itens são apenas periféricos de entrada?</div>
+        </div>
+      </div>
+      <div class="opcoes">
+        <label class="opcao"><input type="radio" name="q5" value="A"><span>A) Monitor, impressora e caixas de som.</span></label>
+        <label class="opcao"><input type="radio" name="q5" value="B"><span>B) Teclado, monitor e impressora.</span></label>
+        <label class="opcao"><input type="radio" name="q5" value="C"><span>C) Teclado, mouse e scanner.</span></label>
+        <label class="opcao"><input type="radio" name="q5" value="D"><span>D) Projetor, monitor e impressora.</span></label>
+      </div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="questao" data-q="6" data-resp="B">
+      <div class="q-header">
+        <div class="q-num">6</div>
+        <div>
+          <span class="q-tag">Entrada, processamento e saída</span>
+          <div class="q-texto">Um sensor lê a umidade do solo. O computador calcula se a irrigação é necessária e mostra a mensagem "Irrigar" na tela. Qual sequência representa corretamente esse processo?</div>
+        </div>
+      </div>
+      <div class="opcoes">
+        <label class="opcao"><input type="radio" name="q6" value="A"><span>A) Processamento → Entrada → Saída</span></label>
+        <label class="opcao"><input type="radio" name="q6" value="B"><span>B) Entrada → Processamento → Saída</span></label>
+        <label class="opcao"><input type="radio" name="q6" value="C"><span>C) Saída → Entrada → Processamento</span></label>
+        <label class="opcao"><input type="radio" name="q6" value="D"><span>D) Armazenamento → Saída → Entrada</span></label>
+      </div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="questao" data-q="7" data-resp="D">
+      <div class="q-header">
+        <div class="q-num">7</div>
+        <div>
+          <span class="q-tag">Software aplicativo</span>
+          <div class="q-texto">Um aluno quer organizar dados de campo em tabela e calcular médias. Qual tipo de software é mais adequado?</div>
+        </div>
+      </div>
+      <div class="opcoes">
+        <label class="opcao"><input type="radio" name="q7" value="A"><span>A) Software de sistema, como Windows</span></label>
+        <label class="opcao"><input type="radio" name="q7" value="B"><span>B) Software utilitário, como antivírus</span></label>
+        <label class="opcao"><input type="radio" name="q7" value="C"><span>C) Sistema operacional, como Linux</span></label>
+        <label class="opcao"><input type="radio" name="q7" value="D"><span>D) Software aplicativo, como Excel ou LibreOffice Calc</span></label>
+      </div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="questao" data-q="8" data-resp="A">
+      <div class="q-header">
+        <div class="q-num">8</div>
+        <div>
+          <span class="q-tag">HD e SSD</span>
+          <div class="q-texto">HD e SSD são dispositivos de armazenamento. Qual alternativa descreve corretamente uma vantagem comum do SSD?</div>
+        </div>
+      </div>
+      <div class="opcoes">
+        <label class="opcao"><input type="radio" name="q8" value="A"><span>A) O SSD costuma ser mais rápido, pois usa tecnologia eletrônica de armazenamento.</span></label>
+        <label class="opcao"><input type="radio" name="q8" value="B"><span>B) O HD costuma ser mais rápido por ter maior capacidade.</span></label>
+        <label class="opcao"><input type="radio" name="q8" value="C"><span>C) HD e SSD são memórias primárias acessadas diretamente pela CPU.</span></label>
+        <label class="opcao"><input type="radio" name="q8" value="D"><span>D) O pen drive é um tipo de memória RAM de alta velocidade.</span></label>
+      </div>
+    </div>
+
+    <!-- Q9 -->
+    <div class="questao" data-q="9" data-resp="C">
+      <div class="q-header">
+        <div class="q-num">9</div>
+        <div>
+          <span class="q-tag">Algoritmo</span>
+          <div class="q-texto">Um estudante quer criar um procedimento para decidir se uma área precisa de irrigação. A regra é: ler a umidade do solo; comparar com 30%; se estiver abaixo de 30%, indicar irrigação; caso contrário, aguardar. Qual alternativa representa melhor esse procedimento como algoritmo?</div>
+        </div>
+      </div>
+      <div class="opcoes">
+        <label class="opcao"><input type="radio" name="q9" value="A"><span>A) Usar somente uma linguagem como Python, sem definir passos.</span></label>
+        <label class="opcao"><input type="radio" name="q9" value="B"><span>B) Fazer um desenho livre da área, sem sequência de ações.</span></label>
+        <label class="opcao"><input type="radio" name="q9" value="C"><span>C) Ler a umidade → comparar com 30% → decidir se irriga → exibir o resultado.</span></label>
+        <label class="opcao"><input type="radio" name="q9" value="D"><span>D) Guardar o valor da umidade e finalizar sem fazer comparação.</span></label>
+      </div>
+    </div>
+
+    <!-- Q10 -->
+    <div class="questao" data-q="10" data-resp="B">
+      <div class="q-header">
+        <div class="q-num">10</div>
+        <div>
+          <span class="q-tag">Tipos de variáveis</span>
+          <div class="q-texto">Um programa para registro de experimento agrícola precisa armazenar três dados: <strong>nome da cultura</strong>, <strong>quantidade de parcelas</strong> e <strong>temperatura média do solo</strong>. Quais tipos combinam com esses dados, nessa ordem?</div>
+        </div>
+      </div>
+      <div class="opcoes">
+        <label class="opcao"><input type="radio" name="q10" value="A"><span>A) Inteiro, real, string.</span></label>
+        <label class="opcao"><input type="radio" name="q10" value="B"><span>B) String, inteiro, real.</span></label>
+        <label class="opcao"><input type="radio" name="q10" value="C"><span>C) Real, string, inteiro.</span></label>
+        <label class="opcao"><input type="radio" name="q10" value="D"><span>D) Inteiro, string, real.</span></label>
+      </div>
+    </div>
+
+    <!-- Q11 -->
+    <div class="questao" data-q="11" data-resp="A">
+      <div class="q-header">
+        <div class="q-num">11</div>
+        <div>
+          <span class="q-tag">SE / SENÃO</span>
+          <div class="q-texto">A escala de pH funciona assim: valores menores que 7 são <strong>ácidos</strong>, valor igual a 7 é <strong>neutro</strong> e valores maiores que 7 são <strong>básicos</strong>. Observe o pseudocódigo:</div>
+          <code class="cod">leia(ph)
+se (ph &lt; 7) entao
+   escreva("Ácido")
+senao se (ph = 7) entao
+   escreva("Neutro")
+senao
+   escreva("Básico")
+fimse</code>
+          <div class="q-texto">Um suco de limão foi medido e apresentou <strong>pH = 2</strong>. Qual texto será exibido?</div>
+        </div>
+      </div>
+      <div class="opcoes">
+        <label class="opcao"><input type="radio" name="q11" value="A"><span>A) Ácido.</span></label>
+        <label class="opcao"><input type="radio" name="q11" value="B"><span>B) Neutro.</span></label>
+        <label class="opcao"><input type="radio" name="q11" value="C"><span>C) Básico.</span></label>
+        <label class="opcao"><input type="radio" name="q11" value="D"><span>D) Erro de leitura do valor.</span></label>
+      </div>
+    </div>
+
+    <!-- Q12 -->
+    <div class="questao" data-q="12" data-resp="D">
+      <div class="q-header">
+        <div class="q-num">12</div>
+        <div>
+          <span class="q-tag">Enquanto</span>
+          <div class="q-texto">Observe um pseudocódigo usado para monitorar a umidade de canteiros:</div>
+          <code class="cod">continuar &lt;- 1
+
+while (continuar = 1) faca
+   leia(umidade)
+
+   se (umidade &lt; 30) entao
+      escreva("Irrigar")
+   senao
+      escreva("Aguardar")
+   fimse
+
+   leia(continuar)
+fimenquanto
+
+escreva("Monitoramento encerrado")</code>
+          <div class="q-texto">Depois da primeira leitura, o usuário digita <strong>0</strong> em <strong>continuar</strong>. Qual será o comportamento do programa?</div>
+        </div>
+      </div>
+      <div class="opcoes">
+        <label class="opcao"><input type="radio" name="q12" value="A"><span>A) O bloco será repetido outra vez, pois 0 manda continuar.</span></label>
+        <label class="opcao"><input type="radio" name="q12" value="B"><span>B) O valor será tratado como texto obrigatório.</span></label>
+        <label class="opcao"><input type="radio" name="q12" value="C"><span>C) A leitura anterior será apagada automaticamente.</span></label>
+        <label class="opcao"><input type="radio" name="q12" value="D"><span>D) O laço será encerrado e a mensagem "Monitoramento encerrado" será exibida.</span></label>
+      </div>
+    </div>
+
+    <!-- Q13 -->
+    <div class="questao" data-q="13" data-resp="B">
+      <div class="q-header">
+        <div class="q-num">13</div>
+        <div>
+          <span class="q-tag">Leitura de código</span>
+          <div class="q-texto">Uma aluna quer classificar a taxa de germinação de sementes. A regra é: taxa igual ou maior que 80 → “Alta”; taxa igual ou maior que 50 → “Média”; valores abaixo disso → “Baixa”. Observe:</div>
+          <code class="cod">total &lt;- 10
+germinadas &lt;- 6
+
+taxa &lt;- (germinadas * 100) / total</code>
+          <div class="q-texto">Como <strong>taxa = 60%</strong>, qual será a classificação?</div>
+        </div>
+      </div>
+      <div class="opcoes">
+        <label class="opcao"><input type="radio" name="q13" value="A"><span>A) Alta.</span></label>
+        <label class="opcao"><input type="radio" name="q13" value="B"><span>B) Média.</span></label>
+        <label class="opcao"><input type="radio" name="q13" value="C"><span>C) Baixa.</span></label>
+        <label class="opcao"><input type="radio" name="q13" value="D"><span>D) Sem classificação.</span></label>
+      </div>
+    </div>
+
+    <!-- Q14 -->
+    <div class="questao" data-q="14" data-resp="B">
+      <div class="q-header">
+        <div class="q-num">14</div>
+        <div>
+          <span class="q-tag">Média e decisão</span>
+          <div class="q-texto">Em um sistema simples de notas, o aluno é aprovado quando a média é <strong>igual ou maior que 7</strong>. Observe o pseudocódigo:</div>
+          <code class="cod">nota1 &lt;- 9
+nota2 &lt;- 6
+
+media &lt;- (nota1 + nota2) / 2
+
+se (media &gt;= 7) entao
+   escreva("Aprovado")
+senao
+   escreva("Reprovado")
+fimse</code>
+          <div class="q-texto">Qual alternativa interpreta corretamente a saída?</div>
+        </div>
+      </div>
+      <div class="opcoes">
+        <label class="opcao"><input type="radio" name="q14" value="A"><span>A) Reprovado, pois uma das notas é menor que 7.</span></label>
+        <label class="opcao"><input type="radio" name="q14" value="B"><span>B) Aprovado, pois a média é 7,5 e atende à condição média &gt;= 7.</span></label>
+        <label class="opcao"><input type="radio" name="q14" value="C"><span>C) Reprovado, pois o programa só aprova média maior que 8.</span></label>
+        <label class="opcao"><input type="radio" name="q14" value="D"><span>D) Erro, pois duas notas impedem o cálculo da média.</span></label>
+      </div>
+    </div>
+
+    <!-- Q15 -->
+    <div class="questao" data-q="15" data-resp="A">
+      <div class="q-header">
+        <div class="q-num">15</div>
+        <div>
+          <span class="q-tag">Fluxograma</span>
+          <div class="q-texto">Um fluxograma para controle de temperatura de uma estufa possui a pergunta: <strong>“temperatura &gt; 30°C?”</strong>. Se a resposta for verdadeira, deve exibir “Ligar ventilação”; caso contrário, “Manter normal”. Em um fluxograma, qual símbolo deve representar essa pergunta?</div>
+        </div>
+      </div>
+      <div class="opcoes">
+        <label class="opcao"><input type="radio" name="q15" value="A"><span>A) Losango, porque representa uma decisão com dois caminhos possíveis.</span></label>
+        <label class="opcao"><input type="radio" name="q15" value="B"><span>B) Oval, porque representa apenas uma ação de cálculo.</span></label>
+        <label class="opcao"><input type="radio" name="q15" value="C"><span>C) Retângulo, porque representa o início e o fim do algoritmo.</span></label>
+        <label class="opcao"><input type="radio" name="q15" value="D"><span>D) Seta, porque armazena o valor da temperatura.</span></label>
+      </div>
+    </div>
+
+    <!-- Q16 -->
+    <div class="questao" data-q="16" data-resp="C">
+      <div class="q-header">
+        <div class="q-num">16</div>
+        <div>
+          <span class="q-tag">Símbolos de fluxograma</span>
+          <div class="q-texto">Um estudante vai desenhar um fluxograma para classificar a germinação. Em determinado ponto, o fluxograma precisa testar a condição <strong>“taxa &gt;= 80%?”</strong>. Qual símbolo é adequado para esse teste?</div>
+        </div>
+      </div>
+      <div class="opcoes">
+        <label class="opcao"><input type="radio" name="q16" value="A"><span>A) Retângulo, usado para indicar início ou fim.</span></label>
+        <label class="opcao"><input type="radio" name="q16" value="B"><span>B) Oval, usado para mostrar uma escolha entre verdadeiro e falso.</span></label>
+        <label class="opcao"><input type="radio" name="q16" value="C"><span>C) Losango, usado para representar decisão ou condição.</span></label>
+        <label class="opcao"><input type="radio" name="q16" value="D"><span>D) Linha horizontal, usada para calcular médias.</span></label>
+      </div>
+    </div>
+
+    <!-- Q17 -->
+    <div class="questao" data-q="17" data-resp="B">
+      <div class="q-header">
+        <div class="q-num">17</div>
+        <div>
+          <span class="q-tag">Leitura de Fluxograma</span>
+          <div class="q-texto">Observe o fluxograma abaixo, que representa uma decisão sobre a temperatura de uma estufa:</div>
+
+          <div class="fluxo-img">
+            <div class="fluxo-row"><span class="fluxo-oval">Início</span></div>
+            <div class="fluxo-row"><span class="fluxo-arrow">↓</span></div>
+            <div class="fluxo-row"><span class="fluxo-box">Ler temperatura</span></div>
+            <div class="fluxo-row"><span class="fluxo-arrow">↓</span></div>
+            <div class="fluxo-row" style="margin:18px 0;">
+              <div style="width:96px;height:96px;border:2px solid var(--azul);background:#e3eff5;transform:rotate(45deg);display:flex;align-items:center;justify-content:center;">
+                <span style="transform:rotate(-45deg);font-size:12px;font-weight:700;color:var(--azul);text-align:center;line-height:1.2;">
+                  temp.<br>&gt; 30°C?
+                </span>
+              </div>
+            </div>
+            <div class="fluxo-row" style="justify-content:space-around;gap:40px;">
+              <div style="text-align:center;"><span style="font-size:11px;color:var(--verde);font-weight:700;">Verdadeiro ↓</span><br><span class="fluxo-box" style="font-size:12px;">Ligar ventilação</span></div>
+              <div style="text-align:center;"><span style="font-size:11px;color:var(--azul);font-weight:700;">Falso ↓</span><br><span class="fluxo-box" style="font-size:12px;">Manter normal</span></div>
+            </div>
+            <div class="fluxo-row" style="margin-top:8px;"><span class="fluxo-arrow">↓ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ↓</span></div>
+            <div class="fluxo-row"><span class="fluxo-oval" style="margin:auto;">Fim</span></div>
+          </div>
+
+          <div class="q-texto">Se a temperatura lida for <strong>28°C</strong>, qual caminho o fluxograma segue?</div>
+        </div>
+      </div>
+      <div class="opcoes">
+        <label class="opcao"><input type="radio" name="q17" value="A"><span>A) Verdadeiro, pois 28 é maior que 30; exibe “Ligar ventilação”.</span></label>
+        <label class="opcao"><input type="radio" name="q17" value="B"><span>B) Falso, pois 28 não é maior que 30; exibe “Manter normal”.</span></label>
+        <label class="opcao"><input type="radio" name="q17" value="C"><span>C) O fluxograma para antes da decisão, pois 28 é um valor inválido.</span></label>
+        <label class="opcao"><input type="radio" name="q17" value="D"><span>D) O fluxograma retorna ao início automaticamente.</span></label>
+      </div>
+    </div>
+
+    <!-- Q18 -->
+    <div class="questao" data-q="18" data-resp="D">
+      <div class="q-header">
+        <div class="q-num">18</div>
+        <div>
+          <span class="q-tag">Estrutura de decisão</span>
+          <div class="q-texto">Observe o pseudocódigo abaixo, usado para avaliar a temperatura de uma estufa:</div>
+          <code class="cod">leia(temperatura)
+
+se (temperatura &gt; 35) entao
+   escreva("Risco de calor")
+senao
+   escreva("Temperatura aceitável")
+fimse</code>
+          <div class="q-texto">Esse trecho representa qual estrutura de programação?</div>
+        </div>
+      </div>
+      <div class="opcoes">
+        <label class="opcao"><input type="radio" name="q18" value="A"><span>A) Estrutura de repetição, pois executa várias vezes automaticamente.</span></label>
+        <label class="opcao"><input type="radio" name="q18" value="B"><span>B) Estrutura de armazenamento permanente em HD.</span></label>
+        <label class="opcao"><input type="radio" name="q18" value="C"><span>C) Estrutura de saída, pois só mostra mensagens na tela.</span></label>
+        <label class="opcao"><input type="radio" name="q18" value="D"><span>D) Estrutura de decisão, pois escolhe uma saída conforme a condição.</span></label>
+      </div>
+    </div>
+
+    <!-- Q19 -->
+    <div class="questao" data-q="19" data-resp="A">
+      <div class="q-header">
+        <div class="q-num">19</div>
+        <div>
+          <span class="q-tag">Lógica aplicada</span>
+          <div class="q-texto">Um programa simples ajuda a decidir o controle de pragas:</div>
+          <code class="cod">leia(pragas)
+
+se (pragas &gt;= 10) entao
+   escreva("Aplicar controle")
+senao
+   escreva("Continuar monitorando")
+fimse</code>
+          <div class="q-texto">Se o valor lido for <strong>8</strong>, qual mensagem será exibida?</div>
+        </div>
+      </div>
+      <div class="opcoes">
+        <label class="opcao"><input type="radio" name="q19" value="A"><span>A) “Continuar monitorando”, pois 8 é menor que 10.</span></label>
+        <label class="opcao"><input type="radio" name="q19" value="B"><span>B) “Aplicar controle”, pois 8 é maior que 10.</span></label>
+        <label class="opcao"><input type="radio" name="q19" value="C"><span>C) As duas mensagens serão exibidas.</span></label>
+        <label class="opcao"><input type="radio" name="q19" value="D"><span>D) O programa gera erro porque 8 é um número inteiro.</span></label>
+      </div>
+    </div>
+
+    <!-- Q20 -->
+    <div class="questao" data-q="20" data-resp="C">
+      <div class="q-header">
+        <div class="q-num">20</div>
+        <div>
+          <span class="q-tag">Escolha do algoritmo</span>
+          <div class="q-texto">Um sensor mede a umidade do solo. O comportamento esperado é: <strong>se a umidade for menor que 30%, exibir “Irrigar”; caso contrário, exibir “Aguardar”</strong>. Qual algoritmo representa corretamente essa situação?</div>
+        </div>
+      </div>
+      <div class="opcoes">
+        <label class="opcao"><input type="radio" name="q20" value="A"><span>A) leia(umidade); se umidade &gt; 30 então escreva("Irrigar"); senão escreva("Aguardar").</span></label>
+        <label class="opcao"><input type="radio" name="q20" value="B"><span>B) leia(umidade); escreva("Irrigar") para qualquer valor lido.</span></label>
+        <label class="opcao"><input type="radio" name="q20" value="C"><span>C) leia(umidade); se umidade &lt; 30 então escreva("Irrigar"); senão escreva("Aguardar").</span></label>
+        <label class="opcao"><input type="radio" name="q20" value="D"><span>D) leia(temperatura); se temperatura &lt; 30 então escreva("Irrigar").</span></label>
+      </div>
+    </div>
+
+    <!-- BOTÃO -->
+  <button class="btn-enviar" id="btnEnviar" onclick="enviarSimulado()">
+    ✅ Finalizar e Ver Resultado
+  </button>
+
+  <!-- RESULTADO -->
+  <div class="panel" id="resultado">
+    <div class="resultado-card">
+      <div class="nota-label">Sua nota</div>
+      <div class="nota-big" id="notaFinal">—</div>
+      <div style="font-size:14px;color:var(--muted);">/ 10,0 pontos</div>
+      <div class="msg-resultado" id="msgResultado"></div>
+      <div class="stats-grid">
+        <div class="stat"><div class="stat-val" id="statAcertos">—</div><div class="stat-lbl">Acertos</div></div>
+        <div class="stat"><div class="stat-val" id="statErros">—</div><div class="stat-lbl">Erros</div></div>
+        <div class="stat"><div class="stat-val" id="statPerc">—</div><div class="stat-lbl">Aproveitamento</div></div>
+      </div>
+    </div>
+    <div class="status-envio" id="statusEnvio"></div>
+  </div>
+
+</div><!-- /main -->
+
+<div class="strip" style="margin-top:auto;"><span></span><span></span><span></span><span></span></div>
+
+<script>
+const GABARITO = {
+  1:'C',2:'B',3:'D',4:'A',5:'C',6:'B',7:'D',8:'A',
+  9:'C',10:'B',11:'A',12:'D',13:'B',14:'B',15:'A',
+  16:'C',17:'B',18:'D',19:'A',20:'C'
+};
+
+const FEEDBACKS = {
+  1:{ok:"Correto! O valor 18% é um dado bruto. Ao interpretar esse valor como solo seco que precisa de irrigação, ele vira informação.",nok:"Dado é o valor bruto coletado, como umidade = 18%. Informação é a interpretação desse dado, como concluir que o solo está seco."},
+  2:{ok:"Correto! Processador, RAM e monitor são componentes físicos, portanto hardware. Windows é software.",nok:"Hardware é a parte física do computador. Software é a parte lógica, como sistemas e programas. Processador, RAM e monitor são hardware; Windows é software."},
+  3:{ok:"Correto! A sequência mais completa é buscar instrução, decodificar, buscar dados, executar e armazenar o resultado.",nok:"A sequência estudada foi: buscar instrução → decodificar → buscar dados → executar → armazenar resultado."},
+  4:{ok:"Correto! A RAM guarda dados em uso durante o processamento.",nok:"Durante o processamento, os dados ficam na RAM. HD e pen drive são usados para armazenamento de arquivos."},
+  5:{ok:"Correto! Teclado, mouse e scanner enviam dados para o computador, portanto são periféricos de entrada.",nok:"Periféricos de entrada enviam dados ao computador. Teclado, mouse e scanner são entrada. Monitor, impressora e projetor são saída."},
+  6:{ok:"Correto! O sensor fornece a entrada, a CPU processa e a tela mostra a saída.",nok:"A sequência correta é Entrada → Processamento → Saída."},
+  7:{ok:"Correto! Excel e LibreOffice Calc são softwares aplicativos para organizar dados e calcular médias.",nok:"Para planilhas e médias, o tipo adequado é software aplicativo, como Excel ou LibreOffice Calc."},
+  8:{ok:"Correto! O SSD costuma apresentar acesso mais rápido aos dados.",nok:"HD e SSD armazenam dados. O SSD costuma ser mais rápido por usar tecnologia eletrônica de armazenamento."},
+  9:{ok:"Correto! O algoritmo apresenta uma sequência lógica: ler a umidade, comparar com o limite, decidir e exibir o resultado.",nok:"Um algoritmo precisa ter passos ordenados para resolver o problema. Nesse caso: ler umidade, comparar com 30%, decidir se irriga e exibir o resultado."},
+  10:{ok:"Correto! Nome da cultura é texto, portanto string; quantidade de parcelas é inteiro; temperatura média pode ter decimal, portanto real.",nok:"A ordem correta é: nome da cultura = string; quantidade de parcelas = inteiro; temperatura média = real."},
+  11:{ok:"Correto! Como pH = 2 é menor que 7, a primeira condição é verdadeira e o programa exibe ‘Ácido’.",nok:"Na escala de pH, valores menores que 7 são ácidos. Como pH = 2, o programa entra no primeiro SE e exibe ‘Ácido’."},
+  12:{ok:"Correto! Ao digitar 0, a condição continuar = 1 fica falsa. O laço termina e a mensagem final é exibida.",nok:"O enquanto só repete enquanto continuar = 1. Se continuar recebe 0, o laço encerra e aparece ‘Monitoramento encerrado’."},
+  13:{ok:"Correto! Com 6 sementes germinadas de 10, a taxa é 60%. Como 60% está entre 50% e 79%, a classificação é ‘Média’.",nok:"A taxa é (6 × 100) ÷ 10 = 60%. Pela regra, valores a partir de 50% e abaixo de 80% são classificados como ‘Média’."},
+  14:{ok:"Correto! A média é (9 + 6) ÷ 2 = 7,5. Como 7,5 é maior ou igual a 7, a saída é ‘Aprovado’.",nok:"Calcule a média: (9 + 6) ÷ 2 = 7,5. A condição media >= 7 é verdadeira, então a saída é ‘Aprovado’."},
+  15:{ok:"Correto! Perguntas de decisão em fluxogramas, como temperatura > 30°C?, são representadas por losango.",nok:"Em fluxogramas, o losango representa uma decisão, isto é, uma pergunta que divide o caminho em verdadeiro/falso."},
+  16:{ok:"Correto! A condição taxa >= 80%? é uma decisão e deve ser representada por um losango.",nok:"Condições em fluxogramas são representadas por losango. Retângulo indica ação; oval indica início ou fim."},
+  17:{ok:"Correto! 28°C é menor que 30°C. A condição é falsa e o fluxograma segue para ‘Manter normal’.",nok:"A pergunta é temperatura > 30°C?. Para 28°C, a resposta é falsa. Por isso o caminho correto é ‘Manter normal’."},
+  18:{ok:"Correto! O trecho usa SE/SENÃO para escolher uma das duas mensagens conforme a temperatura.",nok:"Esse pseudocódigo testa uma condição e escolhe entre duas saídas. Isso caracteriza uma estrutura de decisão."},
+  19:{ok:"Correto! Como 8 é menor que 10, a condição pragas >= 10 é falsa e o programa exibe ‘Continuar monitorando’.",nok:"A condição é pragas >= 10. Para pragas = 8, a condição é falsa; portanto, o programa executa o SENÃO."},
+  20:{ok:"Correto! O algoritmo correto lê a umidade e só exibe ‘Irrigar’ quando umidade < 30; nos demais casos, exibe ‘Aguardar’.",nok:"A regra pede irrigar apenas se a umidade for menor que 30%. O algoritmo correto precisa testar umidade < 30 e usar SENÃO para ‘Aguardar’."}
+};
+
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxJDWc8aMls5OumaG-JxAGdyZB2BUrJHTFnp3HL8mOo-IbmeS0rVDrhtB5m7rKNzbqY/exec";
+
+function enviarSimulado() {
+  const nome = document.getElementById('nome').value.trim();
+  const matricula = document.getElementById('matricula').value.trim();
+
+  if (!nome) { alert('Por favor, informe seu nome.'); return; }
+
+  let acertos = 0;
+  const respostas = [];
+  const blocos = ['Fundamentos','Fundamentos','Fundamentos','Fundamentos','Fundamentos','Fundamentos','Fundamentos','Fundamentos',
+                  'Algoritmos','Algoritmos','Algoritmos','Algoritmos','Algoritmos','Algoritmos','Algoritmos',
+                  'Fluxogramas','Fluxogramas',
+                  'Aplicações','Aplicações','Aplicações'];
+
+  for (let q = 1; q <= 20; q++) {
+    const sel = document.querySelector(`input[name="q${q}"]:checked`);
+    const resp = sel ? sel.value : '';
+    const correta = GABARITO[q];
+    const resultado = resp === correta ? 'Acerto' : 'Erro';
+    if (resultado === 'Acerto') acertos++;
+
+    respostas.push({
+      questao: q,
+      area: blocos[q-1],
+      valorQuestao: 0.5,
+      respostaAluno: resp || 'Não respondida',
+      respostaCorreta: correta,
+      resultado
+    });
+
+    // destacar na tela
+    const divQ = document.querySelector(`.questao[data-q="${q}"]`);
+    divQ.classList.add(resultado === 'Acerto' ? 'correta' : 'errada');
+
+    document.querySelectorAll(`input[name="q${q}"]`).forEach(inp => {
+      inp.disabled = true;
+      const label = inp.parentElement;
+      if (inp.value === correta) label.classList.add('gabarito');
+      else if (inp.checked) label.classList.add('errou');
+    });
+
+    // feedback
+    const fb = document.createElement('div');
+    fb.className = `feedback ${resultado === 'Acerto' ? 'ok' : 'nok'}`;
+    fb.innerHTML = (resultado === 'Acerto' ? '✅ ' : '❌ ') + FEEDBACKS[q][resultado === 'Acerto' ? 'ok' : 'nok'];
+    divQ.appendChild(fb);
+  }
+
+  const nota = (acertos * 0.5).toFixed(1);
+  const perc = Math.round((acertos / 20) * 100);
+
+  document.getElementById('notaFinal').textContent = nota;
+  document.getElementById('statAcertos').textContent = acertos;
+  document.getElementById('statErros').textContent = 20 - acertos;
+  document.getElementById('statPerc').textContent = perc + '%';
+
+  const msgs = [
+    [18,'🎓 Excelente! Domínio completo do conteúdo.'],
+    [14,'👍 Muito bom! Boa compreensão geral.'],
+    [10,'📚 Regular. Revise os blocos com mais erros.'],
+    [0, '⚠️ Abaixo do esperado. Revise os fundamentos antes da prova.']
+  ];
+  document.getElementById('msgResultado').textContent = msgs.find(([min]) => acertos >= min)[1];
+
+  document.getElementById('resultado').style.display = 'block';
+  document.getElementById('btnEnviar').disabled = true;
+  document.getElementById('resultado').scrollIntoView({behavior:'smooth'});
+
+  // enviar para planilha
+  const statusEl = document.getElementById('statusEnvio');
+  statusEl.textContent = '⏳ Enviando prova para o professor...';
+
+  const payload = {
+    aluno: nome,
+    matricula: matricula || 'Não informada',
+    anoEscolar: 'Graduação - Biologia',
+    nivel: 'Prova - Unidade 1 - Introdução à Informática',
+    dataHora: new Date().toLocaleString('pt-BR'),
+    acertos,
+    total: 20,
+    nota: parseFloat(nota),
+    pontosObtidos: parseFloat(nota),
+    pontosPossiveis: 10,
+    percentual: perc,
+    percentualAcertos: perc,
+    regraPontuacao: '20 questões × 0,5 ponto cada = 10 pontos totais',
+    respostas
+  };
+
+  fetch(WEBAPP_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},
+    body: 'payload=' + encodeURIComponent(JSON.stringify(payload))
+  })
+  .then(() => {
+    statusEl.textContent = '✅ Resultado enviado ao servidor. Confira a planilha do professor.';
+  })
+  .catch((erro) => {
+    console.error('Erro ao enviar resultado:', erro);
+    statusEl.textContent = '⚠️ Não foi possível enviar ao servidor. Verifique a implantação do Apps Script e a conexão.';
+  });
+}
+</script>
+</body>
+</html>
