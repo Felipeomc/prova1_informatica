@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Prova Online — Excel: Funções, PROCV e SEERRO</title>
+<title>Prova de Informática e Int. à Computação — Excel: Funções, PROCV e SEERRO</title>
 <style>
 :root{
   --verde:#2d7a4f;--verde2:#4caf7d;--azul:#1a6b8a;--amarelo:#e8a830;
@@ -74,9 +74,9 @@ input[type=text]:focus{border-color:var(--verde2)}
 <div class="hero">
   <div class="hero-card">
     <div class="kicker">UFPB · CCA · DCFS</div>
-    <h1>Prova Online — Excel</h1>
+    <h1>Prova de Informática e Int. a Computação — Excel</h1>
     <p>Funções, SE, PROCV e SEERRO.<br/>10 questões de múltipla escolha · cada questão vale 1,0 ponto · total 10,0 pontos.</p>
-    <div class="badges"><span class="badge">Funções</span><span class="badge">SE</span><span class="badge">PROCV</span><span class="badge">SEERRO</span><span class="badge">Ordem embaralhada</span></div>
+    <div class="badges"><span class="badge">Funções</span><span class="badge">SE</span><span class="badge">PROCV</span><span class="badge">SEERRO</span></div>
   </div>
 </div>
 <div class="main">
@@ -89,12 +89,11 @@ input[type=text]:focus{border-color:var(--verde2)}
     </div>
     <div class="instrucoes" style="margin-top:16px">
       <strong>Regras da prova:</strong><br/>
-      1. Todos respondem às mesmas 10 questões, mas a ordem das questões e das alternativas é embaralhada.<br/>
-      2. A planilha recebe a questão exibida e a questão original, permitindo auditoria da correção.<br/>
+      1. Prova individual.<br/>
+      2. Sem consulta.<br/>
       3. Ao iniciar, o navegador tentará entrar em tela cheia.<br/>
-      4. Copiar, colar, imprimir, abrir menu de contexto e alguns atalhos ficam bloqueados.<br/>
-      5. Sair da aba, sair da tela cheia ou alternar de janela gera ocorrência de segurança. Na terceira ocorrência, a prova é finalizada automaticamente.<br/>
-      6. O resultado final mostra apenas a nota. O gabarito não é exibido ao aluno.
+      4. Tempo limite da prova é de 60 minutos.<br/>
+      5. O resultado final mostra apenas a nota.
     </div>
     <div class="btn-row"><button class="btn" onclick="iniciarProva()">Iniciar prova</button></div>
   </div>
@@ -102,7 +101,7 @@ input[type=text]:focus{border-color:var(--verde2)}
   <div id="areaProva">
     <div class="prova-topbar">
       <div><strong>Prova em andamento</strong><br/><span id="provaIdTexto" style="font-size:12px;color:var(--muted)">Versão: —</span></div>
-      <div class="timer" id="timer">25:00</div>
+      <div class="timer" id="timer">60:00</div>
       <div class="security">Ocorrências de segurança: <span id="violacoesTexto" class="warn">0</span>/3<br/><span id="statusSeguranca">Tela cheia ativa recomendada.</span></div>
     </div>
     <div class="panel">
@@ -133,7 +132,7 @@ input[type=text]:focus{border-color:var(--verde2)}
 const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxJDWc8aMls5OumaG-JxAGdyZB2BUrJHTFnp3HL8mOo-IbmeS0rVDrhtB5m7rKNzbqY/exec";
 
 let provaAtiva=false, provaFinalizada=false, provaId="", seedAtual=1, rng=null;
-let questoesRenderizadas=[], inicioMs=0, tempoLimiteSeg=25*60, timerInterval=null;
+let questoesRenderizadas=[], inicioMs=0, tempoLimiteSeg=60*60, timerInterval=null;
 let violacoes=0, eventosSeguranca=[], nomeAluno="", matriculaAluno="", turmaAluno="";
 
 const QUESTOES_BASE = [
@@ -327,7 +326,7 @@ async function iniciarProva(){
   document.getElementById('painelInicio').style.display='none';
   document.getElementById('areaProva').style.display='block';
   provaAtiva=true;provaFinalizada=false;inicioMs=Date.now();violacoes=0;eventosSeguranca=[];
-  registrarEvento('inicio_prova','Prova iniciada. Questões e alternativas embaralhadas.');
+  registrarEvento('inicio_prova','Prova iniciada. ');
   try{await document.documentElement.requestFullscreen()}catch(e){registrarEvento('fullscreen_nao_ativado','Navegador não permitiu tela cheia automaticamente.')}
   atualizarTimer();
   timerInterval=setInterval(atualizarTimer,1000);
