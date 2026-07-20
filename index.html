@@ -168,24 +168,13 @@ const QUESTOES_BASE = [
     ]
   },
   {
-    idOriginal:"Q04", area:"Funções com condição", tag:"SOMASE",
-    texto:`Observe a tabela. A coluna A contém a cultura e a coluna B contém a produção. Qual fórmula soma a produção apenas da cultura <strong>Milho</strong>?`+
-      `<table class="tabela"><tr><th></th><th>A</th><th>B</th><th>C</th></tr><tr><td class="linha">1</td><td>Cultura</td><td>Produção</td><td>Área</td></tr><tr><td class="linha">2</td><td>Milho</td><td>78</td><td>6</td></tr><tr><td class="linha">3</td><td>Feijão</td><td>37</td><td>2</td></tr><tr><td class="linha">4</td><td>Arroz</td><td>50</td><td>1</td></tr><tr><td class="linha">5</td><td>Milho</td><td>53</td><td>7</td></tr><tr><td class="linha">6</td><td>Arroz</td><td>46</td><td>6</td></tr></table>`,
-    opcoes:[
-      {txt:`=SOMASE(A2:A6;"Milho";B2:B6)`, correta:true},
-      {txt:`=SOMA(A2:A6;"Milho";B2:B6)`, correta:false},
-      {txt:`=SOMASE(B2:B6;"Milho";A2:A6)`, correta:false},
-      {txt:`=SE(A2:A6="Milho";SOMA(B2:B6);0)`, correta:false}
-    ]
-  },
-  {
     idOriginal:"Q05", area:"Função SE", tag:"SE",
     texto:`A célula <strong>C2</strong> contém a média final de um aluno. Qual fórmula classifica como <strong>Aprovado</strong> quando a média for maior ou igual a 7 e como <strong>Reprovado</strong> caso contrário?`,
     opcoes:[
       {txt:`=SE(C2>=7;"Aprovado";"Reprovado")`, correta:true},
       {txt:`=SE(C2<7;"Aprovado";"Reprovado")`, correta:false},
       {txt:`=SE(C2>=7;"Reprovado";"Aprovado")`, correta:false},
-      {txt:`=SOMASE(C2>=7;"Aprovado";"Reprovado")`, correta:false}
+      {txt:`=SE(C2;"Aprovado";"Reprovado")`, correta:false}
     ]
   },
   {
@@ -288,7 +277,7 @@ window.addEventListener('blur',()=>{if(provaAtiva&&!provaFinalizada){setTimeout(
 document.addEventListener('fullscreenchange',()=>{if(provaAtiva&&!provaFinalizada&&!document.fullscreenElement){registrarViolacao('saiu_tela_cheia','Aluno saiu do modo tela cheia.')}});
 
 function gerarQuestoes(){
-  const selecionadas = shuffle(QUESTOES_BASE).slice(0,10);
+  const selecionadas = shuffle(QUESTOES_BASE);
   return selecionadas.map((q,idx)=>{
     const letras=['A','B','C','D'];
     const ops=shuffle(q.opcoes).map((op,i)=>({...op,letraExibida:letras[i]}));
