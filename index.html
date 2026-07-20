@@ -1,785 +1,430 @@
 <!DOCTYPE html>
-
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Prova – Introdução à Informática | Biologia UFPB</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Prova Online — Excel: Funções, PROCV e SEERRO</title>
 <style>
-:root {
-  --verde:#2d7a4f;
-  --verde-claro:#4caf7d;
-  --verde-bg:#e8f5ee;
-  --azul:#1a6b8a;
-  --amarelo:#e8a830;
-  --bg:#f4f8f5;
-  --card:#ffffff;
-  --text:#1a2e1f;
-  --muted:#5a7a62;
-  --erro:#c0392b;
-  --acerto:#27ae60;
+:root{
+  --verde:#2d7a4f;--verde2:#4caf7d;--azul:#1a6b8a;--amarelo:#e8a830;
+  --bg:#f4f8f5;--card:#ffffff;--text:#1a2e1f;--muted:#5a7a62;
+  --erro:#c0392b;--acerto:#27ae60;--borda:#d0e8d6;--cinza:#eef4f0;
 }
-*{box-sizing:border-box;margin:0;padding:0;}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%}
 body{
   font-family:'Segoe UI',Arial,sans-serif;
   background:
-    radial-gradient(circle at 8% 8%, rgba(45,122,79,.13), transparent 28%),
-    radial-gradient(circle at 92% 10%, rgba(26,107,138,.15), transparent 30%),
-    radial-gradient(circle at 50% 97%, rgba(76,175,125,.15), transparent 30%),
+    radial-gradient(circle at 8% 8%,rgba(45,122,79,.12),transparent 28%),
+    radial-gradient(circle at 92% 10%,rgba(26,107,138,.13),transparent 30%),
+    radial-gradient(circle at 50% 97%,rgba(76,175,125,.13),transparent 30%),
     var(--bg);
   color:var(--text);
   min-height:100vh;
+  -webkit-user-select:none;
+  user-select:none;
 }
-.strip{display:grid;grid-template-columns:repeat(4,1fr);height:6px;}
-.strip span:nth-child(1){background:var(--verde);}
-.strip span:nth-child(2){background:var(--azul);}
-.strip span:nth-child(3){background:var(--verde-claro);}
-.strip span:nth-child(4){background:var(--amarelo);}
-
-/* HERO */
-.hero{padding:16px 16px 10px;text-align:center;}
+input{user-select:auto;-webkit-user-select:auto}
+.strip{display:grid;grid-template-columns:repeat(4,1fr);height:6px}
+.strip span:nth-child(1){background:var(--verde)}
+.strip span:nth-child(2){background:var(--azul)}
+.strip span:nth-child(3){background:var(--verde2)}
+.strip span:nth-child(4){background:var(--amarelo)}
+.hero{padding:18px 16px 10px;text-align:center}
 .hero-card{
-  max-width:860px;margin:0 auto;
-  background:rgba(255,255,255,.95);
-  border:1px solid #c8e0cf;border-radius:20px;
-  padding:20px 24px;
-  box-shadow:0 10px 28px rgba(15,40,20,.10);
+  max-width:960px;margin:0 auto;background:rgba(255,255,255,.96);
+  border:1px solid var(--borda);border-radius:20px;padding:22px 24px;
+  box-shadow:0 10px 28px rgba(15,40,20,.10)
 }
-.kicker{
-  display:inline-flex;align-items:center;gap:7px;
-  background:#e3f2ec;color:#1a5c38;
-  border:1px solid #b2d8c4;border-radius:999px;
-  padding:5px 13px;font-weight:700;font-size:13px;margin-bottom:8px;
-}
-h1{font-size:clamp(22px,4vw,36px);line-height:1.1;color:var(--verde);letter-spacing:-0.5px;margin-bottom:6px;}
-.hero p{color:#4a6651;font-size:clamp(13px,1.8vw,15px);line-height:1.5;max-width:680px;margin:0 auto;}
-.badges{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:12px;}
-.badge{
-  background:var(--verde-bg);color:var(--verde);
-  border:1px solid #b2d8c4;border-radius:8px;
-  padding:5px 12px;font-size:13px;font-weight:600;
-}
-
-/* IDENTIFICAÇÃO */
-.main{width:min(900px,calc(100% - 24px));margin:10px auto 30px;display:flex;flex-direction:column;gap:16px;}
-.panel{background:var(--card);border:1px solid #d0e8d6;border-radius:18px;box-shadow:0 8px 24px rgba(15,40,20,.08);padding:24px;}
-
-.id-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-@media(max-width:560px){.id-grid{grid-template-columns:1fr;}}
-label{display:block;font-size:13px;font-weight:700;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px;}
-input,select{
-  width:100%;padding:10px 13px;
-  border:1.5px solid #c8dece;border-radius:9px;
-  font-size:15px;color:var(--text);background:#fbfdfb;
-  outline:none;transition:border-color .2s;
-}
-input:focus,select:focus{border-color:var(--verde-claro);}
-
-/* SEÇÕES */
-.section-header{
-  display:flex;align-items:center;gap:10px;
-  margin-bottom:16px;padding-bottom:10px;
-  border-bottom:2px solid var(--verde-bg);
-}
-.section-icon{
-  width:34px;height:34px;border-radius:10px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:18px;flex-shrink:0;
-}
-.section-icon.verde{background:var(--verde-bg);}
-.section-icon.azul{background:#e3eff5;}
-.section-icon.amarelo{background:#fef6e6;}
-.section-header h2{font-size:17px;color:var(--text);}
-.section-header small{font-size:12px;color:var(--muted);margin-left:auto;}
-
-/* QUESTÃO */
-.questao{
-  border:1.5px solid #dde9e1;border-radius:13px;
-  padding:16px 18px;margin-bottom:12px;
-  background:#fafcfb;transition:border-color .2s;
-}
-.questao:last-child{margin-bottom:0;}
-.q-header{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;}
-.q-num{
-  min-width:30px;height:30px;border-radius:50%;
-  background:var(--verde);color:#fff;
-  display:flex;align-items:center;justify-content:center;
-  font-size:13px;font-weight:700;flex-shrink:0;margin-top:2px;
-}
-.q-texto{font-size:15px;line-height:1.55;color:var(--text);}
-.q-tag{
-  display:inline-block;background:#e3eff5;color:var(--azul);
-  border-radius:6px;padding:2px 8px;font-size:11px;font-weight:600;
-  margin-bottom:6px;
-}
-
-.opcoes{display:flex;flex-direction:column;gap:7px;margin-top:2px;}
-.opcao{
-  display:flex;align-items:flex-start;gap:10px;
-  padding:9px 12px;border-radius:9px;cursor:pointer;
-  border:1.5px solid #dde9e1;background:#fff;
-  transition:all .15s;
-}
-.opcao:hover{border-color:var(--verde-claro);background:var(--verde-bg);}
-.opcao input[type=radio]{
-  width:16px;height:16px;margin-top:2px;flex-shrink:0;
-  accent-color:var(--verde);
-}
-.opcao span{font-size:14px;line-height:1.45;}
-
-/* ESTADOS */
-.questao.correta{border-color:var(--acerto);background:#f0fbf4;}
-.questao.errada{border-color:var(--erro);background:#fdf3f2;}
-.opcao.gabarito{border-color:var(--acerto)!important;background:#e8f8ef!important;}
-.opcao.errou{border-color:var(--erro)!important;background:#fdecea!important;}
-.feedback{margin-top:10px;padding:8px 12px;border-radius:8px;font-size:13px;line-height:1.45;}
-.feedback.ok{background:#e3f5eb;color:#1a5c38;}
-.feedback.nok{background:#fce8e6;color:#952c21;}
-
-/* CÓDIGO */
-.cod{
-  font-family:'Consolas','Courier New',monospace;
-  background:#f0f4f2;border:1px solid #cde0d5;border-radius:8px;
-  padding:10px 13px;font-size:13px;line-height:1.6;
-  white-space:pre;overflow-x:auto;margin:8px 0 4px;display:block;
-}
-
-/* BOTÃO */
-.btn-enviar{
-  display:block;width:100%;padding:15px;
-  background:linear-gradient(135deg,var(--verde),var(--verde-claro));
-  color:#fff;font-size:17px;font-weight:700;
-  border:none;border-radius:13px;cursor:pointer;
-  box-shadow:0 6px 18px rgba(45,122,79,.3);
-  transition:transform .15s,box-shadow .15s;
-}
-.btn-enviar:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(45,122,79,.35);}
-.btn-enviar:disabled{opacity:.6;cursor:not-allowed;transform:none;}
-
-/* RESULTADO */
-#resultado{display:none;}
-.resultado-card{
-  text-align:center;padding:28px 20px;
-  border:2px solid var(--verde);border-radius:18px;
-  background:linear-gradient(135deg,#e8f5ee,#f0fbf6);
-}
-.nota-big{font-size:64px;font-weight:900;color:var(--verde);line-height:1;}
-.nota-label{font-size:14px;color:var(--muted);margin-bottom:8px;}
-.msg-resultado{font-size:16px;font-weight:600;color:var(--text);margin-top:8px;}
-.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px;}
-.stat{background:#fff;border:1px solid #c8e0cf;border-radius:11px;padding:12px;text-align:center;}
-.stat-val{font-size:26px;font-weight:800;color:var(--verde);}
-.stat-lbl{font-size:12px;color:var(--muted);}
-.status-envio{margin-top:12px;font-size:13px;color:var(--muted);text-align:center;min-height:20px;}
-
-/* FLUXOGRAMA */
-.fluxo-img{border:1.5px solid #c8dece;border-radius:10px;padding:14px;background:#fff;margin:8px 0 4px;}
-.fluxo-box{
-  display:inline-block;border:2px solid var(--verde);border-radius:6px;
-  padding:5px 14px;font-size:13px;font-weight:600;background:#e8f5ee;
-  text-align:center;
-}
-.fluxo-diamond{
-  display:inline-block;border:2px solid var(--azul);
-  transform:rotate(45deg);width:70px;height:70px;
-  position:relative;
-}
-.fluxo-diamond span{
-  display:block;transform:rotate(-45deg);
-  font-size:11px;font-weight:600;color:var(--azul);
-  position:absolute;top:50%;left:50%;transform:rotate(-45deg) translate(-50%,-50%);
-  white-space:nowrap;
-}
-.fluxo-oval{
-  display:inline-block;border:2px solid var(--verde);
-  border-radius:50%;padding:5px 16px;
-  font-size:13px;font-weight:600;background:#e8f5ee;
-}
-.fluxo-row{display:flex;align-items:center;justify-content:center;gap:8px;margin:6px 0;}
-.fluxo-arrow{font-size:18px;color:var(--verde);}
+.kicker{display:inline-flex;align-items:center;gap:7px;background:#e3f2ec;color:#1a5c38;border:1px solid #b2d8c4;border-radius:999px;padding:5px 13px;font-weight:700;font-size:13px;margin-bottom:8px}
+h1{font-size:clamp(22px,4vw,34px);line-height:1.12;color:var(--verde);margin-bottom:6px}
+.hero p{color:#4a6651;font-size:15px;line-height:1.5}
+.badges{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:13px}
+.badge{background:#e8f5ee;color:var(--verde);border:1px solid #b2d8c4;border-radius:8px;padding:5px 12px;font-size:13px;font-weight:600}
+.main{width:min(960px,calc(100% - 24px));margin:10px auto 32px;display:flex;flex-direction:column;gap:16px}
+.panel{background:var(--card);border:1px solid var(--borda);border-radius:18px;box-shadow:0 8px 24px rgba(15,40,20,.08);padding:24px}
+.section-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid #e8f5ee}
+.section-icon{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;background:#e8f5ee}
+.section-header h2{font-size:17px;color:var(--text)}
+.section-header small{font-size:12px;color:var(--muted);margin-left:auto}
+.id-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+@media(max-width:720px){.id-grid{grid-template-columns:1fr}}
+label.id-label{display:block;font-size:13px;font-weight:700;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
+input[type=text]{width:100%;padding:10px 13px;border:1.5px solid #c8dece;border-radius:9px;font-size:15px;color:var(--text);background:#fbfdfb;outline:none}
+input[type=text]:focus{border-color:var(--verde2)}
+.instrucoes{background:#f8fbf9;border:1px solid #d9eadf;border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.55;color:#2e4635}
+.instrucoes strong{color:#173f28}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 16px;background:linear-gradient(135deg,var(--verde),var(--verde2));color:#fff;font-size:15px;font-weight:800;border:none;border-radius:12px;cursor:pointer;box-shadow:0 6px 18px rgba(45,122,79,.25)}
+.btn:disabled{opacity:.6;cursor:not-allowed}.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+#areaProva{display:none}
+.prova-topbar{position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;gap:10px;background:#ffffff;border:1px solid var(--borda);border-radius:14px;padding:12px 14px;box-shadow:0 8px 20px rgba(15,40,20,.08);margin-bottom:12px}
+.timer{font-size:20px;font-weight:900;color:var(--verde);font-variant-numeric:tabular-nums}
+.security{font-size:12px;color:var(--muted);text-align:right}.warn{color:var(--erro);font-weight:900}
+.questao{border:1.5px solid #dde9e1;border-radius:13px;padding:16px 18px;margin-bottom:12px;background:#fafcfb}.questao:last-child{margin-bottom:0}
+.q-header{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}.q-num{min-width:30px;height:30px;border-radius:50%;background:var(--verde);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;margin-top:2px}
+.q-tag{display:inline-block;background:#e3eff5;color:var(--azul);border-radius:6px;padding:2px 8px;font-size:11px;font-weight:700;margin-bottom:6px}.q-texto{font-size:15px;line-height:1.55;color:var(--text)}
+.opcoes{display:flex;flex-direction:column;gap:7px;margin-top:8px}.opcao{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:9px;cursor:pointer;border:1.5px solid #dde9e1;background:#fff;transition:all .15s}.opcao:hover{border-color:var(--verde2);background:#e8f5ee}.opcao input[type=radio]{width:16px;height:16px;margin-top:2px;flex-shrink:0;accent-color:var(--verde)}.opcao span{font-size:14px;line-height:1.45}.opcao.selecionada{border-color:var(--verde2);background:#e8f5ee}
+.tabela{border-collapse:collapse;width:100%;margin:10px 0;font-size:13px;background:white}.tabela th,.tabela td{border:1px solid #c8dece;padding:7px 9px;text-align:left}.tabela th{background:#e8f5ee;color:#1a5c38;text-align:center}.tabela .linha{background:#f5faf7;color:#3a6147;text-align:center;font-weight:700;width:52px}.cod{display:block;font-family:Consolas,'Courier New',monospace;background:#f0f4f2;border:1px solid #cde0d5;border-radius:8px;padding:10px 13px;font-size:13px;line-height:1.6;white-space:pre-wrap;overflow-x:auto;margin:8px 0 4px}
+#resultado{display:none;margin-top:14px}.resultado-card{text-align:center;padding:28px 20px;border:2px solid var(--verde);border-radius:18px;background:linear-gradient(135deg,#e8f5ee,#f0fbf6)}.nota-big{font-size:64px;font-weight:900;color:var(--verde);line-height:1}.nota-label{font-size:14px;color:var(--muted);margin-bottom:8px}.msg-resultado{font-size:16px;font-weight:600;color:var(--text);margin-top:8px}.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px}@media(max-width:620px){.stats-grid{grid-template-columns:repeat(2,1fr)}}.stat{background:#fff;border:1px solid #c8e0cf;border-radius:11px;padding:12px;text-align:center}.stat-val{font-size:26px;font-weight:800;color:var(--verde)}.stat-lbl{font-size:12px;color:var(--muted)}.status-envio{margin-top:12px;font-size:13px;color:var(--muted);text-align:center;min-height:20px}
+@media print{body{display:none!important}}
 </style>
 </head>
 <body>
 <div class="strip"><span></span><span></span><span></span><span></span></div>
 <div class="hero">
-<div class="hero-card">
-<div class="kicker">🌿 UFPB · CCA · DCFS</div>
-<h1>Prova — Introdução à Informática</h1>
-<p>Curso de Ciências Biológicas · Unidade 1 · 2026.1 · Prof. Felipe<br/>20 questões · cada questão vale 0,5 ponto · total 10,0 pontos</p>
-<div class="badges">
-<span class="badge">💻 Hardware &amp; Software</span>
-<span class="badge">⚙️ Fundamentos</span>
-<span class="badge">📊 EPS</span>
-<span class="badge">🌿 Algoritmos</span>
-<span class="badge">🔷 Fluxogramas</span>
-</div>
-</div>
+  <div class="hero-card">
+    <div class="kicker">UFPB · CCA · DCFS</div>
+    <h1>Prova Online — Excel</h1>
+    <p>Funções, SE, PROCV e SEERRO.<br/>10 questões de múltipla escolha · cada questão vale 1,0 ponto · total 10,0 pontos.</p>
+    <div class="badges"><span class="badge">Funções</span><span class="badge">SE</span><span class="badge">PROCV</span><span class="badge">SEERRO</span><span class="badge">Ordem embaralhada</span></div>
+  </div>
 </div>
 <div class="main">
-<!-- IDENTIFICAÇÃO -->
-<div class="panel">
-<div class="section-header">
-<div class="section-icon verde">👤</div>
-<h2>Identificação</h2>
-</div>
-<div class="id-grid">
-<div>
-<label for="nome">Nome completo</label>
-<input id="nome" placeholder="Seu nome completo" type="text"/>
-</div>
-<div>
-<label for="matricula">Matrícula</label>
-<input id="matricula" placeholder="Ex.: 20240001" type="text"/>
-</div>
-</div>
-</div>
-<!-- BLOCO 1: FUNDAMENTOS -->
-<div class="panel" id="bloco1">
-<div class="section-header">
-<div class="section-icon verde">💡</div>
-<h2>Bloco 1 — Fundamentos de Computação</h2>
-<small>Q1–Q8 · 4,0 pts</small>
-</div>
-<!-- Q1 -->
-<div class="questao" data-q="1" data-resp="A">
-<div class="q-header"><div class="q-num">1</div><div>
-<span class="q-tag">Dado e informação</span>
-<div class="q-texto">Durante uma coleta de campo, um estudante anotou: <strong>umidade do solo = 18%</strong>. Depois interpretou: <strong>“o solo está seco e precisa de irrigação”</strong>. Qual alternativa diferencia corretamente dado e informação nesse exemplo?</div>
-</div></div>
-<div class="opcoes">
-<label class="opcao"><input name="q1" type="radio" value="A"/><span>A) <strong>18%</strong> é o dado bruto; concluir que o solo está seco é informação.</span></label>
-<label class="opcao"><input name="q1" type="radio" value="B"/><span>B) A frase sobre o solo seco é dado bruto, e o número 18% é informação.</span></label>
-<label class="opcao"><input name="q1" type="radio" value="C"/><span>C) Dado e informação são iguais, pois os dois aparecem na coleta.</span></label>
-<label class="opcao"><input name="q1" type="radio" value="D"/><span>D) Informação é sempre um número; dado é sempre um texto.</span></label>
-</div>
-</div>
-<!-- Q2 -->
-<div class="questao" data-q="2" data-resp="D">
-<div class="q-header"><div class="q-num">2</div><div>
-<span class="q-tag">Hardware e software</span>
-<div class="q-texto">Em um laboratório, os alunos usam computador, monitor, teclado, câmera digital e um programa para visualizar imagens. Qual alternativa separa corretamente <strong>hardware</strong> e <strong>software</strong>?</div>
-</div></div>
-<div class="opcoes">
-<label class="opcao"><input name="q2" type="radio" value="A"/><span>A) Hardware: Windows e programa de imagem; Software: monitor e teclado.</span></label>
-<label class="opcao"><input name="q2" type="radio" value="B"/><span>B) Hardware: apenas o programa de imagem; Software: câmera e monitor.</span></label>
-<label class="opcao"><input name="q2" type="radio" value="C"/><span>C) Hardware e software são sempre partes físicas do computador.</span></label>
-<label class="opcao"><input name="q2" type="radio" value="D"/><span>D) Hardware: monitor, teclado e câmera; Software: sistema operacional e programa de imagem.</span></label>
-</div>
-</div>
-<!-- Q3 -->
-<div class="questao" data-q="3" data-resp="B">
-<div class="q-header"><div class="q-num">3</div><div>
-<span class="q-tag">CPU</span>
-<div class="q-texto">Ao executar um comando, a CPU segue uma sequência lógica de trabalho. Qual alternativa apresenta a sequência mais completa estudada em aula?</div>
-</div></div>
-<div class="opcoes">
-<label class="opcao"><input name="q3" type="radio" value="A"/><span>A) Armazenar resultado → executar → buscar dados → buscar instrução.</span></label>
-<label class="opcao"><input name="q3" type="radio" value="B"/><span>B) Buscar instrução → decodificar → buscar dados → executar → armazenar resultado.</span></label>
-<label class="opcao"><input name="q3" type="radio" value="C"/><span>C) Decodificar → reiniciar o computador → imprimir o resultado.</span></label>
-<label class="opcao"><input name="q3" type="radio" value="D"/><span>D) Executar → apagar a memória → buscar instrução → mostrar resultado.</span></label>
-</div>
-</div>
-<!-- Q4 -->
-<div class="questao" data-q="4" data-resp="C">
-<div class="q-header"><div class="q-num">4</div><div>
-<span class="q-tag">Memória RAM</span>
-<div class="q-texto">Um aluno estava digitando dados de amostras em um programa, mas ainda não tinha salvo o arquivo. A energia acabou e os dados em uso foram perdidos. Em qual memória esses dados estavam durante o processamento?</div>
-</div></div>
-<div class="opcoes">
-<label class="opcao"><input name="q4" type="radio" value="A"/><span>A) No HD, que apaga todos os arquivos quando falta energia.</span></label>
-<label class="opcao"><input name="q4" type="radio" value="B"/><span>B) Na impressora, porque ela guarda os dados da tela.</span></label>
-<label class="opcao"><input name="q4" type="radio" value="C"/><span>C) Na memória RAM, que guarda dados temporários enquanto o computador está ligado.</span></label>
-<label class="opcao"><input name="q4" type="radio" value="D"/><span>D) No monitor, porque ele mostra as informações na tela.</span></label>
-</div>
-</div>
-<!-- Q5 -->
-<div class="questao" data-q="5" data-resp="A">
-<div class="q-header"><div class="q-num">5</div><div>
-<span class="q-tag">Periféricos</span>
-<div class="q-texto">Em uma aula prática, o aluno usa <strong>teclado</strong> para digitar, <strong>mouse</strong> para selecionar opções, <strong>scanner</strong> para digitalizar uma imagem, <strong>monitor</strong> para visualizar e <strong>impressora</strong> para imprimir. Qual alternativa apresenta apenas periféricos de entrada?</div>
-</div></div>
-<div class="opcoes">
-<label class="opcao"><input name="q5" type="radio" value="A"/><span>A) Teclado, mouse e scanner.</span></label>
-<label class="opcao"><input name="q5" type="radio" value="B"/><span>B) Monitor, impressora e caixas de som.</span></label>
-<label class="opcao"><input name="q5" type="radio" value="C"/><span>C) Teclado, monitor e impressora.</span></label>
-<label class="opcao"><input name="q5" type="radio" value="D"/><span>D) Projetor, monitor e impressora.</span></label>
-</div>
-</div>
-<!-- Q6 -->
-<div class="questao" data-q="6" data-resp="D">
-<div class="q-header"><div class="q-num">6</div><div>
-<span class="q-tag">Entrada, processamento e saída</span>
-<div class="q-texto">Um sensor mede a temperatura de uma estufa. O computador compara o valor com um limite e exibe a mensagem <strong>“Temperatura alta”</strong>. Qual sequência representa corretamente esse processo?</div>
-</div></div>
-<div class="opcoes">
-<label class="opcao"><input name="q6" type="radio" value="A"/><span>A) Saída → entrada → processamento.</span></label>
-<label class="opcao"><input name="q6" type="radio" value="B"/><span>B) Processamento → armazenamento → entrada.</span></label>
-<label class="opcao"><input name="q6" type="radio" value="C"/><span>C) Entrada → saída → processamento.</span></label>
-<label class="opcao"><input name="q6" type="radio" value="D"/><span>D) Entrada → processamento → saída.</span></label>
-</div>
-</div>
-<!-- Q7 -->
-<div class="questao" data-q="7" data-resp="B">
-<div class="q-header"><div class="q-num">7</div><div>
-<span class="q-tag">Tipos de software</span>
-<div class="q-texto">Um estudante precisa organizar uma tabela com temperatura, umidade e pH das amostras, além de calcular médias. Qual tipo de software é mais adequado para essa tarefa?</div>
-</div></div>
-<div class="opcoes">
-<label class="opcao"><input name="q7" type="radio" value="A"/><span>A) Software de sistema, como o Windows, pois ele calcula automaticamente as médias.</span></label>
-<label class="opcao"><input name="q7" type="radio" value="B"/><span>B) Software aplicativo, como Excel ou LibreOffice Calc.</span></label>
-<label class="opcao"><input name="q7" type="radio" value="C"/><span>C) Hardware de entrada, como teclado e mouse.</span></label>
-<label class="opcao"><input name="q7" type="radio" value="D"/><span>D) Memória RAM, pois ela substitui uma planilha.</span></label>
-</div>
-</div>
-<!-- Q8 -->
-<div class="questao" data-q="8" data-resp="C">
-<div class="q-header"><div class="q-num">8</div><div>
-<span class="q-tag">Armazenamento</span>
-<div class="q-texto">Depois de coletar dados de um experimento, o aluno precisa salvar o arquivo para usar em outro dia. Qual alternativa descreve corretamente dispositivos de armazenamento?</div>
-</div></div>
-<div class="opcoes">
-<label class="opcao"><input name="q8" type="radio" value="A"/><span>A) A RAM é o principal armazenamento permanente dos arquivos.</span></label>
-<label class="opcao"><input name="q8" type="radio" value="B"/><span>B) O monitor salva os dados exibidos na tela.</span></label>
-<label class="opcao"><input name="q8" type="radio" value="C"/><span>C) HD, SSD e pen drive podem guardar arquivos mesmo depois que o computador é desligado.</span></label>
-<label class="opcao"><input name="q8" type="radio" value="D"/><span>D) O processador é usado principalmente para armazenar fotos e planilhas.</span></label>
-</div>
-</div>
-<!-- Q9 -->
-<div class="questao" data-q="9" data-resp="A">
-<div class="q-header"><div class="q-num">9</div><div>
-<span class="q-tag">Algoritmo aplicado</span>
-<div class="q-texto">Em uma atividade de campo, um aluno quer criar um algoritmo para decidir se uma planta precisa de irrigação. O comportamento esperado é: ler a umidade; se a umidade for menor que 30%, exibir “Irrigar”; caso contrário, exibir “Aguardar”. Qual alternativa representa melhor esse algoritmo?</div>
-</div></div>
-<div class="opcoes">
-<label class="opcao"><input name="q9" type="radio" value="A"/><span>A) Ler umidade → comparar com 30 → se for menor que 30, escrever “Irrigar”; senão, escrever “Aguardar”.</span></label>
-<label class="opcao"><input name="q9" type="radio" value="B"/><span>B) Escrever “Irrigar” antes de ler a umidade.</span></label>
-<label class="opcao"><input name="q9" type="radio" value="C"/><span>C) Ler o nome da planta e encerrar sem comparar nenhum valor.</span></label>
-<label class="opcao"><input name="q9" type="radio" value="D"/><span>D) Mostrar “Aguardar” sempre, independentemente da umidade.</span></label>
-</div>
-</div>
-<!-- Q10 -->
-<div class="questao" data-q="10" data-resp="D">
-<div class="q-header"><div class="q-num">10</div><div>
-<span class="q-tag">Tipos de variáveis</span>
-<div class="q-texto">Um programa de campo precisa guardar três informações: <strong>nome da espécie</strong>, <strong>número de folhas contadas</strong> e <strong>altura média da planta em cm</strong>. Quais tipos de variáveis combinam com esses dados, nessa ordem?</div>
-</div></div>
-<div class="opcoes">
-<label class="opcao"><input name="q10" type="radio" value="A"/><span>A) Inteiro, real, string.</span></label>
-<label class="opcao"><input name="q10" type="radio" value="B"/><span>B) Real, string, inteiro.</span></label>
-<label class="opcao"><input name="q10" type="radio" value="C"/><span>C) String, string, string.</span></label>
-<label class="opcao"><input name="q10" type="radio" value="D"/><span>D) String, inteiro, real.</span></label>
-</div>
-</div>
-<!-- Q11 -->
-<div class="questao" data-q="11" data-resp="C">
-<div class="q-header"><div class="q-num">11</div><div>
-<span class="q-tag">SE / SENÃO</span>
-<div class="q-texto">A escala de pH indica: valores menores que 7 são <strong>ácidos</strong>, valor igual a 7 é <strong>neutro</strong> e valores maiores que 7 são <strong>básicos</strong>. Observe o pseudocódigo:<br/><code class="cod">leia(ph)
-se (ph &lt; 7) entao
-   escreva("Ácido")
-senao se (ph = 7) entao
-   escreva("Neutro")
-senao
-   escreva("Básico")
-fimse</code>Um suco de limão apresentou <strong>pH = 2</strong>. Qual texto será exibido?</div>
-</div></div>
-<div class="opcoes">
-<label class="opcao"><input name="q11" type="radio" value="A"/><span>A) Neutro.</span></label>
-<label class="opcao"><input name="q11" type="radio" value="B"/><span>B) Básico.</span></label>
-<label class="opcao"><input name="q11" type="radio" value="C"/><span>C) Ácido.</span></label>
-<label class="opcao"><input name="q11" type="radio" value="D"/><span>D) Erro de leitura do pH.</span></label>
-</div>
-</div>
-<!-- Q12 -->
-<div class="questao" data-q="12" data-resp="B">
-<div class="q-header"><div class="q-num">12</div><div>
-<span class="q-tag">Enquanto</span>
-<div class="q-texto">Observe o pseudocódigo usado para registrar temperaturas de amostras enquanto o usuário quiser continuar:<br/><code class="cod">continuar &lt;- 1
+  <div class="panel" id="painelInicio">
+    <div class="section-header"><div class="section-icon">👤</div><h2>Identificação e início da prova</h2></div>
+    <div class="id-grid">
+      <div><label class="id-label" for="nome">Nome completo</label><input id="nome" type="text" autocomplete="off" placeholder="Seu nome completo"/></div>
+      <div><label class="id-label" for="matricula">Matrícula</label><input id="matricula" type="text" autocomplete="off" placeholder="Ex.: 20260001"/></div>
+      <div><label class="id-label" for="turma">Turma</label><input id="turma" type="text" autocomplete="off" placeholder="Ex.: Biologia"/></div>
+    </div>
+    <div class="instrucoes" style="margin-top:16px">
+      <strong>Regras da prova:</strong><br/>
+      1. Todos respondem às mesmas 10 questões, mas a ordem das questões e das alternativas é embaralhada.<br/>
+      2. A planilha recebe a questão exibida e a questão original, permitindo auditoria da correção.<br/>
+      3. Ao iniciar, o navegador tentará entrar em tela cheia.<br/>
+      4. Copiar, colar, imprimir, abrir menu de contexto e alguns atalhos ficam bloqueados.<br/>
+      5. Sair da aba, sair da tela cheia ou alternar de janela gera ocorrência de segurança. Na terceira ocorrência, a prova é finalizada automaticamente.<br/>
+      6. O resultado final mostra apenas a nota. O gabarito não é exibido ao aluno.
+    </div>
+    <div class="btn-row"><button class="btn" onclick="iniciarProva()">Iniciar prova</button></div>
+  </div>
 
-enquanto (continuar = 1) faca
-   escreva("Digite a temperatura:")
-   leia(temp)
+  <div id="areaProva">
+    <div class="prova-topbar">
+      <div><strong>Prova em andamento</strong><br/><span id="provaIdTexto" style="font-size:12px;color:var(--muted)">Versão: —</span></div>
+      <div class="timer" id="timer">25:00</div>
+      <div class="security">Ocorrências de segurança: <span id="violacoesTexto" class="warn">0</span>/3<br/><span id="statusSeguranca">Tela cheia ativa recomendada.</span></div>
+    </div>
+    <div class="panel">
+      <div class="section-header"><div class="section-icon">📊</div><h2>Questões</h2><small>Q1–Q10 · 10,0 pts</small></div>
+      <div id="questoes"></div>
+      <button class="btn" id="btnEnviar" style="width:100%;margin-top:10px" onclick="finalizarProva('entrega_manual')">Finalizar prova</button>
+      <div class="panel" id="resultado">
+        <div class="resultado-card">
+          <div class="nota-label">Sua nota</div>
+          <div class="nota-big" id="notaFinal">—</div>
+          <div style="font-size:14px;color:var(--muted)">/ 10,0 pontos</div>
+          <div class="msg-resultado" id="msgResultado"></div>
+          <div class="stats-grid">
+            <div class="stat"><div class="stat-val" id="statAcertos">—</div><div class="stat-lbl">Acertos</div></div>
+            <div class="stat"><div class="stat-val" id="statErros">—</div><div class="stat-lbl">Erros</div></div>
+            <div class="stat"><div class="stat-val" id="statPerc">—</div><div class="stat-lbl">Aproveitamento</div></div>
+            <div class="stat"><div class="stat-val" id="statSeg">—</div><div class="stat-lbl">Ocorrências</div></div>
+          </div>
+        </div>
+        <div class="status-envio" id="statusEnvio"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="strip"><span></span><span></span><span></span><span></span></div>
 
-   escreva("Registrar outra amostra?")
-   escreva("1 - Sim")
-   escreva("0 - Encerrar")
-   leia(continuar)
-fimenquanto
-
-escreva("Monitoramento encerrado")</code>Depois da primeira amostra, o usuário digita <strong>0</strong> em <strong>continuar</strong>. O que acontecerá?</div>
-</div></div>
-<div class="opcoes">
-<label class="opcao"><input name="q12" type="radio" value="A"/><span>A) O bloco será repetido obrigatoriamente mais uma vez.</span></label>
-<label class="opcao"><input name="q12" type="radio" value="B"/><span>B) O laço será encerrado e a mensagem “Monitoramento encerrado” será exibida.</span></label>
-<label class="opcao"><input name="q12" type="radio" value="C"/><span>C) O valor será tratado como texto obrigatório.</span></label>
-<label class="opcao"><input name="q12" type="radio" value="D"/><span>D) A temperatura digitada será apagada automaticamente.</span></label>
-</div>
-</div>
-<!-- Q13 -->
-<div class="questao" data-q="13" data-resp="D">
-<div class="q-header"><div class="q-num">13</div><div>
-<span class="q-tag">Leitura de código</span>
-<div class="q-texto">Uma turma calculou a taxa de germinação de sementes. A regra é: taxa igual ou maior que 80 → “Alta”; taxa igual ou maior que 50 → “Média”; abaixo disso → “Baixa”.<br/><code class="cod">total &lt;- 10
-germinadas &lt;- 6
-taxa &lt;- (germinadas * 100) / total</code>Como <strong>taxa = 60%</strong>, qual será a classificação?</div>
-</div></div>
-<div class="opcoes">
-<label class="opcao"><input name="q13" type="radio" value="A"/><span>A) Alta.</span></label>
-<label class="opcao"><input name="q13" type="radio" value="B"/><span>B) Baixa.</span></label>
-<label class="opcao"><input name="q13" type="radio" value="C"/><span>C) Sem classificação.</span></label>
-<label class="opcao"><input name="q13" type="radio" value="D"/><span>D) Média.</span></label>
-</div>
-</div>
-<!-- Q14 -->
-<div class="questao" data-q="14" data-resp="A">
-<div class="q-header"><div class="q-num">14</div><div>
-<span class="q-tag">Média e decisão</span>
-<div class="q-texto">Observe o pseudocódigo de aprovação:<br/><code class="cod">nota1 &lt;- 7
-nota2 &lt;- 9
-media &lt;- (nota1 + nota2) / 2
-
-se (media &gt;= 7) entao
-   escreva("Aprovado")
-senao
-   escreva("Reprovado")
-fimse</code>Qual será a saída do programa?</div>
-</div></div>
-<div class="opcoes">
-<label class="opcao"><input name="q14" type="radio" value="A"/><span>A) Aprovado, porque a média é 8.</span></label>
-<label class="opcao"><input name="q14" type="radio" value="B"/><span>B) Reprovado, porque uma das notas é 7.</span></label>
-<label class="opcao"><input name="q14" type="radio" value="C"/><span>C) Aprovado, porque o programa escolhe sempre a primeira saída.</span></label>
-<label class="opcao"><input name="q14" type="radio" value="D"/><span>D) Erro, porque média não pode ser calculada com duas notas.</span></label>
-</div>
-</div>
-<!-- Q15 -->
-<div class="questao" data-q="15" data-resp="C">
-<div class="q-header"><div class="q-num">15</div><div>
-<span class="q-tag">Fluxograma</span>
-<div class="q-texto">Um fluxograma sobre germinação possui uma etapa com a pergunta: <strong>“germinou?”</strong>. Essa pergunta pode ter dois caminhos: <strong>Verdadeiro</strong> ou <strong>Falso</strong>. Qual símbolo deve representar essa decisão?</div>
-</div></div>
-<div class="opcoes">
-<label class="opcao"><input name="q15" type="radio" value="A"/><span>A) Oval, usado apenas para cálculos matemáticos.</span></label>
-<label class="opcao"><input name="q15" type="radio" value="B"/><span>B) Retângulo, usado para início e fim.</span></label>
-<label class="opcao"><input name="q15" type="radio" value="C"/><span>C) Losango, usado para decisões com dois caminhos.</span></label>
-<label class="opcao"><input name="q15" type="radio" value="D"/><span>D) Seta, usada para guardar valores na memória.</span></label>
-</div>
-</div>
-<!-- Q16 -->
-<div class="questao" data-q="16" data-resp="B">
-<div class="q-header"><div class="q-num">16</div><div>
-<span class="q-tag">Leitura de fluxograma</span>
-<div class="q-texto">Em um fluxograma de compostagem, há a decisão: <strong>temperatura &gt;= 45?</strong>. Se a temperatura lida for <strong>50°C</strong>, qual caminho a decisão deve seguir?</div>
-</div></div>
-<div class="opcoes">
-<label class="opcao"><input name="q16" type="radio" value="A"/><span>A) Falso, porque 50 é menor que 45.</span></label>
-<label class="opcao"><input name="q16" type="radio" value="B"/><span>B) Verdadeiro, porque 50 é maior ou igual a 45.</span></label>
-<label class="opcao"><input name="q16" type="radio" value="C"/><span>C) Fim, porque toda temperatura encerra o programa.</span></label>
-<label class="opcao"><input name="q16" type="radio" value="D"/><span>D) Entrada, porque 50 é um texto.</span></label>
-</div>
-</div>
-<!-- Q17 -->
-<div class="questao" data-q="17" data-resp="D">
-<div class="q-header"><div class="q-num">17</div><div>
-<span class="q-tag">Fluxograma aplicado</span>
-<div class="q-texto">Observe o fluxograma abaixo, que representa uma classificação simples da temperatura da compostagem:<div class="fluxo-img"><div class="fluxo-row"><span class="fluxo-oval">Início</span></div><div class="fluxo-row"><span class="fluxo-arrow">↓</span></div><div class="fluxo-row"><span class="fluxo-box">Ler temperatura</span></div><div class="fluxo-row"><span class="fluxo-arrow">↓</span></div><div class="fluxo-row" style="margin:18px 0;"><div style="width:92px;height:92px;border:2px solid var(--azul);background:#e3eff5;transform:rotate(45deg);display:flex;align-items:center;justify-content:center;"><span style="transform:rotate(-45deg);font-size:12px;font-weight:700;color:var(--azul);text-align:center;line-height:1.2;">temp<br/>&gt;= 45?</span></div></div><div class="fluxo-row" style="justify-content:space-around;gap:40px;"><div style="text-align:center;"><span style="font-size:11px;color:var(--verde);font-weight:700;">Verdadeiro ↓</span><br/><span class="fluxo-box" style="font-size:12px;">Fase quente</span></div><div style="text-align:center;"><span style="font-size:11px;color:var(--azul);font-weight:700;">Falso ↓</span><br/><span class="fluxo-box" style="font-size:12px;">Fase fria</span></div></div><div class="fluxo-row"><span class="fluxo-arrow">↓</span></div><div class="fluxo-row"><span class="fluxo-oval">Fim</span></div></div>Se a temperatura lida for <strong>42°C</strong>, qual saída o fluxograma indica?</div>
-</div></div>
-<div class="opcoes">
-<label class="opcao"><input name="q17" type="radio" value="A"/><span>A) Fase quente, porque 42 é maior que 45.</span></label>
-<label class="opcao"><input name="q17" type="radio" value="B"/><span>B) O programa para antes da decisão.</span></label>
-<label class="opcao"><input name="q17" type="radio" value="C"/><span>C) As duas saídas aparecem ao mesmo tempo.</span></label>
-<label class="opcao"><input name="q17" type="radio" value="D"/><span>D) Fase fria, porque 42 não atende à condição temp &gt;= 45.</span></label>
-</div>
-</div>
-<!-- Q18 -->
-<div class="questao" data-q="18" data-resp="C">
-<div class="q-header"><div class="q-num">18</div><div>
-<span class="q-tag">Decisão em pseudocódigo</span>
-<div class="q-texto">Um programa simples deve orientar a irrigação com base na umidade do solo:<br/><code class="cod">leia(umidade)
-se (umidade &lt; 20) entao
-   escreva("Irrigar")
-senao
-   escreva("Aguardar")
-fimse</code>Se a umidade lida for <strong>18%</strong>, qual será a saída?</div>
-</div></div>
-<div class="opcoes">
-<label class="opcao"><input name="q18" type="radio" value="A"/><span>A) Aguardar, porque 18 é maior que 20.</span></label>
-<label class="opcao"><input name="q18" type="radio" value="B"/><span>B) Erro, porque porcentagem não pode ser comparada.</span></label>
-<label class="opcao"><input name="q18" type="radio" value="C"/><span>C) Irrigar, porque 18 é menor que 20.</span></label>
-<label class="opcao"><input name="q18" type="radio" value="D"/><span>D) As duas mensagens serão exibidas.</span></label>
-</div>
-</div>
-<!-- Q19 -->
-<div class="questao" data-q="19" data-resp="B">
-<div class="q-header"><div class="q-num">19</div><div>
-<span class="q-tag">Código e limite</span>
-<div class="q-texto">Observe o código abaixo:<br/><code class="cod">altura &lt;- 10
-
-se (altura &gt;= 20) entao
-   escreva("Alta")
-senao se (altura &gt;= 10) entao
-   escreva("Média")
-senao
-   escreva("Baixa")
-fimse</code>Qual texto será exibido?</div>
-</div></div>
-<div class="opcoes">
-<label class="opcao"><input name="q19" type="radio" value="A"/><span>A) Alta, porque 10 é maior que 20.</span></label>
-<label class="opcao"><input name="q19" type="radio" value="B"/><span>B) Média, porque 10 atende à condição altura &gt;= 10.</span></label>
-<label class="opcao"><input name="q19" type="radio" value="C"/><span>C) Baixa, porque 10 é sempre considerado baixo.</span></label>
-<label class="opcao"><input name="q19" type="radio" value="D"/><span>D) Erro, porque altura não pode ser número inteiro.</span></label>
-</div>
-</div>
-<!-- Q20 -->
-<div class="questao" data-q="20" data-resp="A">
-<div class="q-header"><div class="q-num">20</div><div>
-<span class="q-tag">Escolha do algoritmo</span>
-<div class="q-texto">Um professor quer um algoritmo que leia a temperatura de <strong>3 amostras</strong>, calcule a média e exiba <strong>“Quente”</strong> se a média for maior que 30; caso contrário, exiba <strong>“Adequado”</strong>. Qual alternativa representa melhor esse comportamento?</div>
-</div></div>
-<div class="opcoes">
-<label class="opcao"><input name="q20" type="radio" value="A"/><span>A) Ler t1, t2 e t3 → média = (t1+t2+t3)/3 → se média &gt; 30 escrever “Quente”; senão escrever “Adequado”.</span></label>
-<label class="opcao"><input name="q20" type="radio" value="B"/><span>B) Ler apenas t1 → escrever “Quente” sem calcular média.</span></label>
-<label class="opcao"><input name="q20" type="radio" value="C"/><span>C) Calcular média antes de ler as temperaturas → encerrar sem mostrar resultado.</span></label>
-<label class="opcao"><input name="q20" type="radio" value="D"/><span>D) Ler três temperaturas → escrever sempre “Adequado”, sem comparação.</span></label>
-</div>
-</div>
-<!-- BOTÃO -->
-<button class="btn-enviar" id="btnEnviar" onclick="enviarSimulado()">
-    ✅ Finalizar e Ver Resultado
-  </button>
-<!-- RESULTADO -->
-<div class="panel" id="resultado">
-<div class="resultado-card">
-<div class="nota-label">Sua nota</div>
-<div class="nota-big" id="notaFinal">—</div>
-<div style="font-size:14px;color:var(--muted);">/ 10,0 pontos</div>
-<div class="msg-resultado" id="msgResultado"></div>
-<div class="stats-grid">
-<div class="stat"><div class="stat-val" id="statAcertos">—</div><div class="stat-lbl">Acertos</div></div>
-<div class="stat"><div class="stat-val" id="statErros">—</div><div class="stat-lbl">Erros</div></div>
-<div class="stat"><div class="stat-val" id="statPerc">—</div><div class="stat-lbl">Aproveitamento</div></div>
-</div>
-</div>
-<div class="status-envio" id="statusEnvio"></div>
-</div>
-</div><!-- /main -->
-<div class="strip" style="margin-top:auto;"><span></span><span></span><span></span><span></span></div>
 <script>
-const GABARITO_BASE = {
-  1:'A',2:'D',3:'B',4:'C',5:'A',
-  6:'D',7:'B',8:'C',9:'A',10:'D',
-  11:'C',12:'B',13:'D',14:'A',15:'C',
-  16:'B',17:'D',18:'C',19:'B',20:'A'
-};
-
-let GABARITO = {...GABARITO_BASE};
-
-const FEEDBACKS = {
-  1:{ok:"Correto! O valor 18% é o dado bruto. Quando esse valor é interpretado como solo seco que precisa de irrigação, ele se torna informação.",nok:"Dado é o valor bruto coletado, como umidade = 18%. Informação é a interpretação desse dado, como concluir que o solo está seco."},
-  2:{ok:"Correto! Hardware é a parte física: monitor, teclado e câmera. Software é a parte lógica: sistema operacional e programas.",nok:"A parte física do computador é hardware. Programas e sistemas são software."},
-  3:{ok:"Correto! A sequência mais completa é buscar instrução, decodificar, buscar dados, executar e armazenar o resultado.",nok:"A sequência estudada foi: buscar instrução → decodificar → buscar dados → executar → armazenar resultado."},
-  4:{ok:"Correto! A RAM guarda dados temporários em uso. Sem energia, o conteúdo que não foi salvo pode ser perdido.",nok:"Durante o processamento, os dados ficam na RAM. Para manter depois, é preciso salvar em armazenamento permanente, como HD ou SSD."},
-  5:{ok:"Correto! Teclado, mouse e scanner enviam dados para o computador, portanto são periféricos de entrada.",nok:"Periféricos de entrada enviam dados ao computador. Monitor, impressora e projetor são periféricos de saída."},
-  6:{ok:"Correto! O sensor fornece a entrada, o computador processa a comparação e a tela mostra a saída.",nok:"A sequência correta é: entrada dos dados → processamento → saída do resultado."},
-  7:{ok:"Correto! Excel e LibreOffice Calc são softwares aplicativos usados para organizar dados e fazer cálculos.",nok:"Para organizar tabelas e calcular médias, o mais adequado é um software aplicativo de planilha."},
-  8:{ok:"Correto! HD, SSD e pen drive são usados para armazenar arquivos de forma não volátil.",nok:"Arquivos salvos ficam em armazenamento permanente, como HD, SSD ou pen drive. RAM é temporária."},
-  9:{ok:"Correto! O algoritmo lê a umidade, compara com o limite e escolhe a mensagem adequada.",nok:"Um algoritmo deve seguir passos ordenados. Nesse caso: ler a umidade, comparar com 30% e decidir a saída."},
-  10:{ok:"Correto! Nome da espécie é texto/string; número de folhas é inteiro; altura média pode ter decimal, portanto é real.",nok:"A ordem correta é: nome da espécie = string; número de folhas = inteiro; altura média = real."},
-  11:{ok:"Correto! Como pH = 2 é menor que 7, a primeira condição é verdadeira e o programa exibe “Ácido”.",nok:"Na escala de pH, valores menores que 7 são ácidos. Como pH = 2, a saída é “Ácido”."},
-  12:{ok:"Correto! Ao digitar 0, a condição continuar = 1 fica falsa. O laço termina e a mensagem final é exibida.",nok:"O enquanto só repete enquanto continuar = 1. Se continuar recebe 0, o laço encerra."},
-  13:{ok:"Correto! 6 de 10 sementes germinaram, então a taxa é 60%. Como 60 é maior ou igual a 50 e menor que 80, a classificação é “Média”.",nok:"Calcule: 6 × 100 ÷ 10 = 60%. Pela regra, 60% entra na classificação “Média”."},
-  14:{ok:"Correto! A média é (7 + 9) / 2 = 8. Como 8 é maior ou igual a 7, a saída é “Aprovado”.",nok:"A média é 8. Como a condição é media >= 7, o programa exibe “Aprovado”."},
-  15:{ok:"Correto! O losango representa decisões no fluxograma, normalmente com dois caminhos, como Verdadeiro/Falso.",nok:"Decisões em fluxogramas são representadas por losango. Início/fim costuma usar oval; ações usam retângulo."},
-  16:{ok:"Correto! Como 50 é maior ou igual a 45, a decisão é verdadeira.",nok:"A condição é temperatura >= 45. Como 50 satisfaz essa condição, o caminho é Verdadeiro."},
-  17:{ok:"Correto! Como 42 é menor que 45, a condição é falsa e o fluxograma segue para “Fase fria”.",nok:"A condição é temp >= 45. Para 42°C, ela é falsa; portanto a saída é “Fase fria”."},
-  18:{ok:"Correto! Como 18 é menor que 20, a condição é verdadeira e a saída é “Irrigar”.",nok:"A condição testada é umidade < 20. Como 18 < 20, o programa exibe “Irrigar”."},
-  19:{ok:"Correto! A primeira condição é falsa, mas a segunda é verdadeira: 10 >= 10. A saída é “Média”.",nok:"O programa testa primeiro altura >= 20, que é falso. Depois testa altura >= 10, que é verdadeiro. Portanto exibe “Média”."},
-  20:{ok:"Correto! O algoritmo correto lê os três valores, calcula a média, compara com 30 e escolhe a saída.",nok:"O comportamento esperado exige quatro etapas: ler 3 temperaturas, calcular média, comparar com 30 e exibir a mensagem adequada."}
-};
-
 const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxJDWc8aMls5OumaG-JxAGdyZB2BUrJHTFnp3HL8mOo-IbmeS0rVDrhtB5m7rKNzbqY/exec";
 
-function removerLetraInicial(html) {
-  return html.replace(/^\s*[A-D]\)\s*/i, '');
-}
+let provaAtiva=false, provaFinalizada=false, provaId="", seedAtual=1, rng=null;
+let questoesRenderizadas=[], inicioMs=0, tempoLimiteSeg=25*60, timerInterval=null;
+let violacoes=0, eventosSeguranca=[], nomeAluno="", matriculaAluno="", turmaAluno="";
 
-function embaralharArray(lista) {
-  const copia = [...lista];
-  for (let i = copia.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [copia[i], copia[j]] = [copia[j], copia[i]];
+const QUESTOES_BASE = [
+  {
+    idOriginal:"Q01", area:"Funções básicas", tag:"SOMA",
+    texto:`Qual fórmula soma todos os valores do intervalo <strong>D2:D6</strong>?`,
+    opcoes:[
+      {txt:"=SOMA(D2:D6)", correta:true},
+      {txt:"=MÉDIA(D2:D6)", correta:false},
+      {txt:"=SOMA(D2;D6)", correta:false},
+      {txt:"=D2*D6", correta:false}
+    ]
+  },
+  {
+    idOriginal:"Q02", area:"Funções básicas", tag:"MÉDIA",
+    texto:`Qual fórmula calcula a média dos valores do intervalo <strong>B2:B8</strong>?`,
+    opcoes:[
+      {txt:"=MÉDIA(B2:B8)", correta:true},
+      {txt:"=SOMA(B2:B8)", correta:false},
+      {txt:"=MÁXIMO(B2:B8)", correta:false},
+      {txt:"=MÍNIMO(B2:B8)", correta:false}
+    ]
+  },
+  {
+    idOriginal:"Q03", area:"Funções básicas", tag:"MÁXIMO e MÍNIMO",
+    texto:`Em uma tabela de temperaturas no intervalo <strong>C2:C9</strong>, qual alternativa retorna corretamente o maior e o menor valor?`,
+    opcoes:[
+      {txt:"Maior: =MÁXIMO(C2:C9) / Menor: =MÍNIMO(C2:C9)", correta:true},
+      {txt:"Maior: =MÉDIA(C2:C9) / Menor: =SOMA(C2:C9)", correta:false},
+      {txt:"Maior: =MÍNIMO(C2:C9) / Menor: =MÁXIMO(C2:C9)", correta:false},
+      {txt:"Maior: =SOMA(C2:C9) / Menor: =MÉDIA(C2:C9)", correta:false}
+    ]
+  },
+  {
+    idOriginal:"Q04", area:"Funções com condição", tag:"SOMASE",
+    texto:`Observe a tabela. A coluna A contém a cultura e a coluna B contém a produção. Qual fórmula soma a produção apenas da cultura <strong>Milho</strong>?`+
+      `<table class="tabela"><tr><th></th><th>A</th><th>B</th><th>C</th></tr><tr><td class="linha">1</td><td>Cultura</td><td>Produção</td><td>Área</td></tr><tr><td class="linha">2</td><td>Milho</td><td>78</td><td>6</td></tr><tr><td class="linha">3</td><td>Feijão</td><td>37</td><td>2</td></tr><tr><td class="linha">4</td><td>Arroz</td><td>50</td><td>1</td></tr><tr><td class="linha">5</td><td>Milho</td><td>53</td><td>7</td></tr><tr><td class="linha">6</td><td>Arroz</td><td>46</td><td>6</td></tr></table>`,
+    opcoes:[
+      {txt:`=SOMASE(A2:A6;"Milho";B2:B6)`, correta:true},
+      {txt:`=SOMA(A2:A6;"Milho";B2:B6)`, correta:false},
+      {txt:`=SOMASE(B2:B6;"Milho";A2:A6)`, correta:false},
+      {txt:`=SE(A2:A6="Milho";SOMA(B2:B6);0)`, correta:false}
+    ]
+  },
+  {
+    idOriginal:"Q05", area:"Função SE", tag:"SE",
+    texto:`A célula <strong>C2</strong> contém a média final de um aluno. Qual fórmula classifica como <strong>Aprovado</strong> quando a média for maior ou igual a 7 e como <strong>Reprovado</strong> caso contrário?`,
+    opcoes:[
+      {txt:`=SE(C2>=7;"Aprovado";"Reprovado")`, correta:true},
+      {txt:`=SE(C2<7;"Aprovado";"Reprovado")`, correta:false},
+      {txt:`=SE(C2>=7;"Reprovado";"Aprovado")`, correta:false},
+      {txt:`=SOMASE(C2>=7;"Aprovado";"Reprovado")`, correta:false}
+    ]
+  },
+  {
+    idOriginal:"Q06", area:"Função SE", tag:"Interpretação do SE",
+    texto:`Considere a fórmula: <code class="cod">=SE(D2>2000;"Alta";"Baixa")</code> Se <strong>D2 = 1800</strong>, qual será o resultado?`,
+    opcoes:[
+      {txt:"Baixa", correta:true},
+      {txt:"Alta", correta:false},
+      {txt:"2000", correta:false},
+      {txt:"Erro, pois 1800 não pode ser comparado", correta:false}
+    ]
+  },
+  {
+    idOriginal:"Q07", area:"PROCV", tag:"Conceito",
+    texto:`O que a função <strong>PROCV</strong> faz no Excel?`,
+    opcoes:[
+      {txt:"Busca um valor na primeira coluna de uma tabela e retorna um dado da mesma linha em outra coluna.", correta:true},
+      {txt:"Soma valores de uma coluna quando uma condição é atendida.", correta:false},
+      {txt:"Calcula a média de um intervalo de células.", correta:false},
+      {txt:"Destaca células automaticamente com base em uma regra visual.", correta:false}
+    ]
+  },
+  {
+    idOriginal:"Q08", area:"PROCV", tag:"Regra da tabela",
+    texto:`Qual é uma regra importante para usar corretamente o <strong>PROCV</strong>?`,
+    opcoes:[
+      {txt:"O valor procurado deve estar na primeira coluna da matriz/tabela selecionada.", correta:true},
+      {txt:"O valor procurado deve estar sempre na última coluna da planilha.", correta:false},
+      {txt:"A função PROCV só funciona com números e nunca com textos.", correta:false},
+      {txt:"A coluna de resultado precisa estar à esquerda da coluna pesquisada.", correta:false}
+    ]
+  },
+  {
+    idOriginal:"Q09", area:"PROCV", tag:"Sintaxe do PROCV",
+    texto:`Na célula <strong>E15</strong>, o usuário digita o nome de um produto. A tabela de busca está em <strong>A15:B17</strong>, com o produto na coluna A e o preço na coluna B. Qual fórmula busca o preço do produto?`,
+    opcoes:[
+      {txt:`=PROCV(E15;A15:B17;2;FALSO)`, correta:true},
+      {txt:`=PROCV(A15:B17;E15;2;FALSO)`, correta:false},
+      {txt:`=PROCV(E15;A15:B17;1;FALSO)`, correta:false},
+      {txt:`=SEERRO(E15;A15:B17;2;FALSO)`, correta:false}
+    ]
+  },
+  {
+    idOriginal:"Q10", area:"SEERRO", tag:"SEERRO + PROCV",
+    texto:`Qual fórmula tenta buscar o preço com PROCV e, caso o produto não seja encontrado, mostra a mensagem <strong>Produto não encontrado</strong>?`,
+    opcoes:[
+      {txt:`=SEERRO(PROCV(E15;A15:B17;2;FALSO);"Produto não encontrado")`, correta:true},
+      {txt:`=SE(PROCV(E15;A15:B17;2;FALSO);"Produto não encontrado")`, correta:false},
+      {txt:`=PROCV(SEERRO(E15;A15:B17;2;FALSO);"Produto não encontrado")`, correta:false},
+      {txt:`=SEERRO("Produto não encontrado";PROCV(E15;A15:B17;2;FALSO))`, correta:false}
+    ]
+  },
+  {
+    idOriginal:"Q11", area:"SE + SEERRO + PROCV", tag:"Fórmula completa",
+    texto:`Qual fórmula faz as três ações: se <strong>E15</strong> estiver vazia, mostra <strong>Digite um produto</strong>; se houver produto, tenta buscar em <strong>A15:B17</strong>; se não encontrar, mostra <strong>Produto não encontrado</strong>?`,
+    opcoes:[
+      {txt:`=SE(E15="";"Digite um produto";SEERRO(PROCV(E15;A15:B17;2;FALSO);"Produto não encontrado"))`, correta:true},
+      {txt:`=SEERRO(E15="";"Digite um produto";PROCV(E15;A15:B17;2;FALSO))`, correta:false},
+      {txt:`=PROCV(E15;A15:B17;2;SEERRO("Produto não encontrado"))`, correta:false},
+      {txt:`=SE(E15="";PROCV(E15;A15:B17;2;FALSO);"Digite um produto")`, correta:false}
+    ]
   }
-  return copia;
+];
+
+function hashString(str){let h=2166136261;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
+function mulberry32(a){return function(){let t=a+=0x6D2B79F5;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296}}
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
+function pad(n){return String(n).padStart(2,'0')}
+function stripHtml(html){const tmp=document.createElement('div');tmp.innerHTML=html;return tmp.textContent||tmp.innerText||''}
+
+function registrarEvento(tipo,detalhe){
+  if(provaFinalizada)return;
+  eventosSeguranca.push({tipo,detalhe:detalhe||'',dataHora:new Date().toLocaleString('pt-BR'),segundosDesdeInicio:inicioMs?Math.round((Date.now()-inicioMs)/1000):0});
 }
-
-function embaralharAlternativas() {
-  const letras = ['A','B','C','D'];
-  const chaveMemoria = 'prova_informatica_biologia_ultima_posicao_correta_v3';
-  let ultimas = {};
-
-  try {
-    ultimas = JSON.parse(localStorage.getItem(chaveMemoria) || '{}');
-  } catch (e) {
-    ultimas = {};
-  }
-
-  const novas = {};
-  GABARITO = {};
-
-  for (let q = 1; q <= 20; q++) {
-    const questao = document.querySelector(`.questao[data-q="${q}"]`);
-    if (!questao) continue;
-
-    const opcoesBox = questao.querySelector('.opcoes');
-    const labels = Array.from(opcoesBox.querySelectorAll('label.opcao'));
-
-    const itens = labels.map(label => {
-      const input = label.querySelector('input');
-      const span = label.querySelector('span');
-      return {
-        html: removerLetraInicial(span.innerHTML),
-        correta: input.value === GABARITO_BASE[q]
-      };
-    });
-
-    let ordem = embaralharArray(itens);
-    let tentativa = 0;
-    while (tentativa < 40) {
-      const posCorreta = ordem.findIndex(item => item.correta);
-      const letraCorreta = letras[posCorreta];
-      const ultimaLetra = ultimas[String(q)];
-      const deveEvitar = ultimaLetra || GABARITO_BASE[q];
-      if (letraCorreta !== deveEvitar) break;
-      ordem = embaralharArray(itens);
-      tentativa++;
-    }
-
-    labels.forEach((label, index) => {
-      const input = label.querySelector('input');
-      const span = label.querySelector('span');
-      const letra = letras[index];
-      input.value = letra;
-      input.checked = false;
-      span.innerHTML = letra + ') ' + ordem[index].html;
-      opcoesBox.appendChild(label);
-
-      if (ordem[index].correta) {
-        GABARITO[q] = letra;
-        questao.setAttribute('data-resp', letra);
-        novas[String(q)] = letra;
-      }
-    });
-  }
-
-  try {
-    localStorage.setItem(chaveMemoria, JSON.stringify(novas));
-  } catch (e) {}
+function registrarViolacao(tipo,detalhe){
+  if(!provaAtiva||provaFinalizada)return;
+  violacoes++;
+  registrarEvento(tipo,detalhe);
+  document.getElementById('violacoesTexto').textContent=violacoes;
+  document.getElementById('statusSeguranca').textContent=detalhe||'Ocorrência registrada.';
+  if(violacoes>=3){finalizarProva('autoencerrada_por_ocorrencias')}
 }
-
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', embaralharAlternativas);
-} else {
-  embaralharAlternativas();
+function bloquearEvento(e,tipo){
+  if(provaAtiva&&!provaFinalizada){e.preventDefault();registrarEvento(tipo,'Ação bloqueada pelo modo prova.');return false}
 }
-
-function enviarSimulado() {
-  const nome = document.getElementById('nome').value.trim();
-  const matricula = document.getElementById('matricula').value.trim();
-
-  if (!nome) { alert('Por favor, informe seu nome.'); return; }
-
-  let acertos = 0;
-  const respostas = [];
-  const blocos = ['Fundamentos','Fundamentos','Fundamentos','Fundamentos','Fundamentos','Fundamentos','Fundamentos','Fundamentos',
-                  'Algoritmos','Algoritmos','Algoritmos','Algoritmos','Algoritmos','Algoritmos','Fluxogramas',
-                  'Fluxogramas','Fluxogramas','Aplicações','Aplicações','Aplicações'];
-
-  for (let q = 1; q <= 20; q++) {
-    const sel = document.querySelector(`input[name="q${q}"]:checked`);
-    const resp = sel ? sel.value : '';
-    const correta = GABARITO[q];
-    const resultado = resp === correta ? 'Acerto' : 'Erro';
-    if (resultado === 'Acerto') acertos++;
-
-    respostas.push({
-      questao: q,
-      area: blocos[q-1],
-      valorQuestao: 0.5,
-      respostaAluno: resp || 'Não respondida',
-      respostaCorreta: correta,
-      resultado
-    });
-
-    const divQ = document.querySelector(`.questao[data-q="${q}"]`);
-    divQ.classList.add(resultado === 'Acerto' ? 'correta' : 'errada');
-
-    document.querySelectorAll(`input[name="q${q}"]`).forEach(inp => {
-      inp.disabled = true;
-      const label = inp.parentElement;
-      if (inp.value === correta) label.classList.add('gabarito');
-      else if (inp.checked) label.classList.add('errou');
-    });
-
-    const fb = document.createElement('div');
-    fb.className = `feedback ${resultado === 'Acerto' ? 'ok' : 'nok'}`;
-    fb.innerHTML = (resultado === 'Acerto' ? '✅ ' : '❌ ') + FEEDBACKS[q][resultado === 'Acerto' ? 'ok' : 'nok'];
-    divQ.appendChild(fb);
+document.addEventListener('copy',e=>bloquearEvento(e,'copy_bloqueado'));
+document.addEventListener('cut',e=>bloquearEvento(e,'cut_bloqueado'));
+document.addEventListener('paste',e=>bloquearEvento(e,'paste_bloqueado'));
+document.addEventListener('contextmenu',e=>bloquearEvento(e,'menu_contexto_bloqueado'));
+document.addEventListener('keydown',e=>{
+  if(!provaAtiva||provaFinalizada)return;
+  const key=e.key.toLowerCase();
+  if((e.ctrlKey&&['c','v','x','a','p','s','u','f'].includes(key)) || key==='f12' || (e.ctrlKey&&e.shiftKey&&['i','j','c'].includes(key))){
+    e.preventDefault();
+    registrarEvento('atalho_bloqueado','Tecla bloqueada: '+e.key);
   }
+});
+document.addEventListener('visibilitychange',()=>{if(provaAtiva&&!provaFinalizada&&document.hidden){registrarViolacao('aba_oculta','Aluno saiu da aba ou minimizou a janela.')}});
+window.addEventListener('blur',()=>{if(provaAtiva&&!provaFinalizada){setTimeout(()=>{if(provaAtiva&&!provaFinalizada&&document.hidden){registrarViolacao('janela_sem_foco','Janela perdeu foco durante a prova.')}},300)}});
+document.addEventListener('fullscreenchange',()=>{if(provaAtiva&&!provaFinalizada&&!document.fullscreenElement){registrarViolacao('saiu_tela_cheia','Aluno saiu do modo tela cheia.')}});
 
-  const nota = (acertos * 0.5).toFixed(1);
-  const perc = Math.round((acertos / 20) * 100);
-
-  document.getElementById('notaFinal').textContent = nota;
-  document.getElementById('statAcertos').textContent = acertos;
-  document.getElementById('statErros').textContent = 20 - acertos;
-  document.getElementById('statPerc').textContent = perc + '%';
-
-  const msgs = [
-    [18,'🎓 Excelente! Domínio completo do conteúdo.'],
-    [14,'👍 Muito bom! Boa compreensão geral.'],
-    [10,'📚 Regular. Revise os blocos com mais erros.'],
-    [0, '⚠️ Abaixo do esperado. Revise os fundamentos antes da prova.']
-  ];
-  document.getElementById('msgResultado').textContent = msgs.find(([min]) => acertos >= min)[1];
-
-  document.getElementById('resultado').style.display = 'block';
-  document.getElementById('btnEnviar').disabled = true;
-  document.getElementById('resultado').scrollIntoView({behavior:'smooth'});
-
-  const statusEl = document.getElementById('statusEnvio');
-  statusEl.textContent = '⏳ Enviando resultado para o professor...';
-
-  const payload = {
-    aluno: nome,
-    matricula: matricula || 'Não informada',
-    anoEscolar: 'Graduação - Biologia',
-    nivel: 'Prova - Introdução à Informática - versão Biologia randomizada',
-    dataHora: new Date().toLocaleString('pt-BR'),
-    acertos,
-    total: 20,
-    nota: parseFloat(nota),
-    pontosObtidos: parseFloat(nota),
-    pontosPossiveis: 10,
-    percentual: perc,
-    percentualAcertos: perc,
-    regraPontuacao: '20 questões × 0,5 ponto cada = 10 pontos totais',
-    versaoProva: 'biologia_randomizada_v3',
-    respostas
-  };
-
-  fetch(WEBAPP_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: {'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},
-    body: 'payload=' + encodeURIComponent(JSON.stringify(payload))
-  })
-  .then(() => {
-    statusEl.textContent = '✅ Resultado enviado ao servidor. Confira a planilha do professor.';
-  })
-  .catch((erro) => {
-    console.error('Erro ao enviar resultado:', erro);
-    statusEl.textContent = '⚠️ Não foi possível enviar ao servidor. Verifique a implantação do Apps Script e a conexão.';
+function gerarQuestoes(){
+  const selecionadas = shuffle(QUESTOES_BASE).slice(0,10);
+  return selecionadas.map((q,idx)=>{
+    const letras=['A','B','C','D'];
+    const ops=shuffle(q.opcoes).map((op,i)=>({...op,letraExibida:letras[i]}));
+    const correta=ops.find(op=>op.correta);
+    return {...q, numeroExibido:idx+1, opcoesEmbaralhadas:ops, letraCorretaExibida:correta.letraExibida, textoCorreto:correta.txt};
   });
 }
+
+function renderizarQuestoes(){
+  const box=document.getElementById('questoes');
+  box.innerHTML='';
+  questoesRenderizadas=gerarQuestoes();
+  questoesRenderizadas.forEach(q=>{
+    const div=document.createElement('div');
+    div.className='questao';
+    div.dataset.id=q.idOriginal;
+    div.dataset.exibida=q.numeroExibido;
+    let html=`<div class="q-header"><div class="q-num">${q.numeroExibido}</div><div><span class="q-tag">${q.tag}</span><div class="q-texto">${q.texto}</div></div></div>`;
+    html+='<div class="opcoes">';
+    q.opcoesEmbaralhadas.forEach(op=>{
+      html+=`<label class="opcao"><input type="radio" name="${q.idOriginal}" value="${op.letraExibida}" data-correta="${op.correta?'1':'0'}" data-texto="${encodeURIComponent(op.txt)}"><span>${op.letraExibida}) ${op.txt}</span></label>`;
+    });
+    html+='</div>';
+    div.innerHTML=html;
+    box.appendChild(div);
+  });
+  document.querySelectorAll('.opcao input[type=radio]').forEach(inp=>{
+    inp.addEventListener('change',()=>{
+      document.querySelectorAll(`input[name="${inp.name}"]`).forEach(x=>x.parentElement.classList.remove('selecionada'));
+      inp.parentElement.classList.add('selecionada');
+    });
+  });
+}
+
+async function iniciarProva(){
+  nomeAluno=document.getElementById('nome').value.trim();
+  matriculaAluno=document.getElementById('matricula').value.trim();
+  turmaAluno=document.getElementById('turma').value.trim();
+  if(!nomeAluno){alert('Informe seu nome completo.');return}
+  if(!matriculaAluno){alert('Informe sua matrícula.');return}
+  const tentativa = Date.now().toString(36).toUpperCase();
+  seedAtual = hashString(nomeAluno+'|'+matriculaAluno+'|'+turmaAluno+'|'+tentativa+'|'+Math.random());
+  rng = mulberry32(seedAtual);
+  provaId = 'EXCEL-' + seedAtual.toString(16).toUpperCase().slice(0,8);
+  document.getElementById('provaIdTexto').textContent='Versão: '+provaId;
+  renderizarQuestoes();
+  document.getElementById('painelInicio').style.display='none';
+  document.getElementById('areaProva').style.display='block';
+  provaAtiva=true;provaFinalizada=false;inicioMs=Date.now();violacoes=0;eventosSeguranca=[];
+  registrarEvento('inicio_prova','Prova iniciada. Questões e alternativas embaralhadas.');
+  try{await document.documentElement.requestFullscreen()}catch(e){registrarEvento('fullscreen_nao_ativado','Navegador não permitiu tela cheia automaticamente.')}
+  atualizarTimer();
+  timerInterval=setInterval(atualizarTimer,1000);
+}
+
+function atualizarTimer(){
+  if(!provaAtiva||provaFinalizada)return;
+  const decorrido=Math.floor((Date.now()-inicioMs)/1000);
+  const restante=Math.max(0,tempoLimiteSeg-decorrido);
+  const min=Math.floor(restante/60), sec=restante%60;
+  document.getElementById('timer').textContent=pad(min)+':'+pad(sec);
+  if(restante<=0){finalizarProva('tempo_esgotado')}
+}
+
+function avaliarQuestao(q){
+  const sel=document.querySelector(`input[name="${q.idOriginal}"]:checked`);
+  const respLetra=sel?sel.value:'';
+  const respTexto=sel?decodeURIComponent(sel.dataset.texto):'';
+  const acertou=sel?sel.dataset.correta==='1':false;
+  return {
+    questaoExibida:q.numeroExibido,
+    questaoOriginal:q.idOriginal,
+    area:q.area,
+    tag:q.tag,
+    textoQuestao:stripHtml(q.texto).replace(/\s+/g,' ').trim(),
+    valorQuestao:1,
+    respostaAluno:respLetra||'Não respondida',
+    respostaTexto:respTexto||'Não respondida',
+    respostaCorreta:q.letraCorretaExibida,
+    respostaCorretaTexto:q.textoCorreto,
+    resultado:acertou?'Acerto':'Erro'
+  };
+}
+function bloquearCampos(){document.querySelectorAll('#questoes input').forEach(el=>el.disabled=true)}
+
+function finalizarProva(motivo){
+  if(provaFinalizada)return;
+  provaFinalizada=true;provaAtiva=false;clearInterval(timerInterval);
+  registrarEvento('fim_prova',motivo);
+  bloquearCampos();
+  document.getElementById('btnEnviar').disabled=true;
+  let acertos=0;
+  const respostas=questoesRenderizadas.map(q=>{const r=avaliarQuestao(q);if(r.resultado==='Acerto')acertos++;return r});
+  const nota=acertos.toFixed(1), perc=Math.round((acertos/10)*100), tempoSeg=Math.round((Date.now()-inicioMs)/1000);
+  document.getElementById('notaFinal').textContent=nota;
+  document.getElementById('statAcertos').textContent=acertos;
+  document.getElementById('statErros').textContent=10-acertos;
+  document.getElementById('statPerc').textContent=perc+'%';
+  document.getElementById('statSeg').textContent=violacoes;
+  document.getElementById('msgResultado').textContent=motivo==='autoencerrada_por_ocorrencias'?'Prova finalizada automaticamente por ocorrências de segurança.':motivo==='tempo_esgotado'?'Tempo esgotado. Prova finalizada automaticamente.':'Prova finalizada. Resultado registrado.';
+  document.getElementById('resultado').style.display='block';
+  document.getElementById('resultado').scrollIntoView({behavior:'smooth'});
+  const statusEl=document.getElementById('statusEnvio');
+  statusEl.textContent='Enviando resultado para a planilha...';
+  const ordemQuestoes=questoesRenderizadas.map(q=>({questaoExibida:q.numeroExibido,questaoOriginal:q.idOriginal,tag:q.tag,letraCorretaExibida:q.letraCorretaExibida}));
+  const payload={
+    aluno:nomeAluno,
+    matricula:matriculaAluno||'Não informada',
+    turma:turmaAluno||'Não informada',
+    anoEscolar:'Graduação',
+    nivel:'Prova - Excel - Funções, PROCV e SEERRO - múltipla escolha',
+    abaDestino:'Prova_Excel_PROCV_SEERRO',
+    dataHora:new Date().toLocaleString('pt-BR'),
+    provaId:provaId,
+    seed:seedAtual,
+    statusProva:motivo,
+    ordemQuestoes:ordemQuestoes,
+    acertos:acertos,
+    total:10,
+    nota:parseFloat(nota),
+    pontosObtidos:parseFloat(nota),
+    pontosPossiveis:10,
+    percentual:perc,
+    percentualAcertos:perc,
+    regraPontuacao:'10 questões × 1,0 ponto cada = 10 pontos totais',
+    versaoProva:'prova_excel_funcoes_procv_seerro_multiescolha_embaralhada_v1',
+    tempoSegundos:tempoSeg,
+    ocorrenciasSeguranca:violacoes,
+    eventosSeguranca:eventosSeguranca,
+    respostas:respostas
+  };
+  fetch(WEBAPP_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},body:'payload='+encodeURIComponent(JSON.stringify(payload))})
+    .then(()=>{statusEl.textContent='Resultado enviado. Confira a aba Prova_Excel_PROCV_SEERRO na planilha.'})
+    .catch(erro=>{console.error('Erro ao enviar resultado:',erro);statusEl.textContent='Não foi possível enviar. Verifique a implantação do Apps Script e a conexão.'});
+  try{if(document.fullscreenElement)document.exitFullscreen()}catch(e){}
+}
 </script>
-</div></body>
+</body>
 </html>
