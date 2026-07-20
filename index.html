@@ -167,7 +167,7 @@ const QUESTOES_BASE = [
     ]
   },
   {
-    idOriginal:"Q05", area:"Função SE", tag:"SE",
+    idOriginal:"Q04", area:"Função SE", tag:"SE",
     texto:`A célula <strong>C2</strong> contém a média final de um aluno. Qual fórmula classifica como <strong>Aprovado</strong> quando a média for maior ou igual a 7 e como <strong>Reprovado</strong> caso contrário?`,
     opcoes:[
       {txt:`=SE(C2>=7;"Aprovado";"Reprovado")`, correta:true},
@@ -177,7 +177,7 @@ const QUESTOES_BASE = [
     ]
   },
   {
-    idOriginal:"Q06", area:"Função SE", tag:"Interpretação do SE",
+    idOriginal:"Q05", area:"Função SE", tag:"Interpretação do SE",
     texto:`Considere a fórmula: <code class="cod">=SE(D2>2000;"Alta";"Baixa")</code> Se <strong>D2 = 1800</strong>, qual será o resultado?`,
     opcoes:[
       {txt:"Baixa", correta:true},
@@ -187,7 +187,7 @@ const QUESTOES_BASE = [
     ]
   },
   {
-    idOriginal:"Q07", area:"PROCV", tag:"Conceito",
+    idOriginal:"Q06", area:"PROCV", tag:"Conceito",
     texto:`O que a função <strong>PROCV</strong> faz no Excel?`,
     opcoes:[
       {txt:"Busca um valor na primeira coluna de uma tabela e retorna um dado da mesma linha em outra coluna.", correta:true},
@@ -197,7 +197,7 @@ const QUESTOES_BASE = [
     ]
   },
   {
-    idOriginal:"Q08", area:"PROCV", tag:"Regra da tabela",
+    idOriginal:"Q07", area:"PROCV", tag:"Regra da tabela",
     texto:`Qual é uma regra importante para usar corretamente o <strong>PROCV</strong>?`,
     opcoes:[
       {txt:"O valor procurado deve estar na primeira coluna da matriz/tabela selecionada.", correta:true},
@@ -207,7 +207,7 @@ const QUESTOES_BASE = [
     ]
   },
   {
-    idOriginal:"Q09", area:"PROCV", tag:"Sintaxe do PROCV",
+    idOriginal:"Q08", area:"PROCV", tag:"Sintaxe do PROCV",
     texto:`Na célula <strong>E15</strong>, o usuário digita o nome de um produto. A tabela de busca está em <strong>A15:B17</strong>, com o produto na coluna A e o preço na coluna B. Qual fórmula busca o preço do produto?`,
     opcoes:[
       {txt:`=PROCV(E15;A15:B17;2;FALSO)`, correta:true},
@@ -217,7 +217,7 @@ const QUESTOES_BASE = [
     ]
   },
   {
-    idOriginal:"Q10", area:"SEERRO", tag:"SEERRO + PROCV",
+    idOriginal:"Q09", area:"SEERRO", tag:"SEERRO + PROCV",
     texto:`Qual fórmula tenta buscar o preço com PROCV e, caso o produto não seja encontrado, mostra a mensagem <strong>Produto não encontrado</strong>?`,
     opcoes:[
       {txt:`=SEERRO(PROCV(E15;A15:B17;2;FALSO);"Produto não encontrado")`, correta:true},
@@ -227,7 +227,7 @@ const QUESTOES_BASE = [
     ]
   },
   {
-    idOriginal:"Q11", area:"SE + SEERRO + PROCV", tag:"Fórmula completa",
+    idOriginal:"Q10", area:"SE + SEERRO + PROCV", tag:"Fórmula completa",
     texto:`Qual fórmula faz as três ações: se <strong>E15</strong> estiver vazia, mostra <strong>Digite um produto</strong>; se houver produto, tenta buscar em <strong>A15:B17</strong>; se não encontrar, mostra <strong>Produto não encontrado</strong>?`,
     opcoes:[
       {txt:`=SE(E15="";"Digite um produto";SEERRO(PROCV(E15;A15:B17;2;FALSO);"Produto não encontrado"))`, correta:true},
